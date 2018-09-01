@@ -59,8 +59,7 @@ class WebSettingController extends Controller
             if (!Storage::disk('public')->exists('laraption')) {
                 Storage::disk('public')->makeDirectory('laraption');
             }
-            $siteImage = Image::make($image)->save('temp/site_logo_tmp.png');
-            Storage::disk('public')->put('laraption/admasina_logo.png',$siteImage);
+            $siteImage = Image::make($image)->save('logo.png');
         }
 
         $setData = json_encode([
@@ -71,7 +70,7 @@ class WebSettingController extends Controller
             'siteBookPerPage' => $request->siteBookPerPage,
             'siteCommentPerPage' => $request->siteCommentPerPage,
             'adminItemPerPage' => $request->adminItemPerPage,
-            'siteLogo' => 'admasina_logo.png']);
+            'siteLogo' => 'logo.png']);
 
         $setting = Laraption::updateOrCreate(
             ['optkey' => 'webSetting'],
