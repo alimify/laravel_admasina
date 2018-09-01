@@ -56,7 +56,7 @@ class TranslatorController extends Controller
             }
         $imageName = $slug.'-'.uniqid().'.'.$image->getClientOriginalExtension();
 
-            $translatorImage = Image::make($image)->resize(500,333)->save('storage/translator/tmp.'.$image->getClientOriginalExtension());
+            $translatorImage = Image::make($image)->resize(500,333)->save('temp/tmp.'.$image->getClientOriginalExtension());
             Storage::disk('public')->put('translator/'.$imageName,$translatorImage);
 
 
@@ -126,7 +126,7 @@ class TranslatorController extends Controller
             }
             $imageName = $slug.'-'.uniqid().'.'.$image->getClientOriginalExtension();
 
-            $translatorImage = Image::make($image)->resize(500,333)->save('storage/translator/tmp.'.$image->getClientOriginalExtension());
+            $translatorImage = Image::make($image)->resize(500,333)->save('temp/tmp.'.$image->getClientOriginalExtension());
             Storage::disk('public')->put('translator/'.$imageName,$translatorImage);
 
 

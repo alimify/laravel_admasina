@@ -60,7 +60,7 @@ class LanguageController extends Controller
             }
             $imageName = $slug.'-'.uniqid().'.'.$image->getClientOriginalExtension();
 
-            $langImage = Image::make($image)->resize(32,32)->save('storage/language/tmp.'.$image->getClientOriginalExtension());
+            $langImage = Image::make($image)->resize(32,32)->save('temp/tmp.'.$image->getClientOriginalExtension());
             Storage::disk('public')->put('language/'.$imageName,$langImage);
 
         }else{
@@ -137,7 +137,7 @@ class LanguageController extends Controller
             }
             $imageName = $slug.'-'.uniqid().'.'.$image->getClientOriginalExtension();
 
-            $langImage = Image::make($image)->resize(32,32)->save('storage/language/tmp.'.$image->getClientOriginalExtension());
+            $langImage = Image::make($image)->resize(32,32)->save('temp/tmp.'.$image->getClientOriginalExtension());
             Storage::disk('public')->put('language/'.$imageName,$langImage);
 
         }else{

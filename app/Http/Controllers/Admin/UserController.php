@@ -99,7 +99,7 @@ class UserController extends Controller
             }
 
 
-            $proImage = Image::make($image)->resize(312,312)->save("storage/$directory/tmp.".$image->getClientOriginalExtension());
+            $proImage = Image::make($image)->resize(312,312)->save("temp/tmp.".$image->getClientOriginalExtension());
             Storage::disk('public')->put($link,$proImage);
 
         }

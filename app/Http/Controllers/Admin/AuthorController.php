@@ -58,7 +58,7 @@ class AuthorController extends Controller
             }
             $imageName = $slug.'-'.uniqid().'.'.$image->getClientOriginalExtension();
 
-            $tagImage = Image::make($image)->resize(500,333)->save('storage/author/tmp.'.$image->getClientOriginalExtension());
+            $tagImage = Image::make($image)->resize(500,333)->save('temp/tmp.'.$image->getClientOriginalExtension());
             Storage::disk('public')->put('author/'.$imageName,$tagImage);
 
 
@@ -129,7 +129,7 @@ class AuthorController extends Controller
             }
             $imageName = $slug.'-'.uniqid().'.'.$image->getClientOriginalExtension();
 
-            $tagImage = Image::make($image)->resize(500,333)->save('storage/author/tmp.'.$image->getClientOriginalExtension());
+            $tagImage = Image::make($image)->resize(500,333)->save('temp/tmp.'.$image->getClientOriginalExtension());
             Storage::disk('public')->put('author/'.$imageName,$tagImage);
 
 

@@ -59,7 +59,7 @@ class WebSettingController extends Controller
             if (!Storage::disk('public')->exists('laraption')) {
                 Storage::disk('public')->makeDirectory('laraption');
             }
-            Image::make($image)->save('storage/laraption/admasina_logo.png');
+            Storage::disk('public')->put('storage/laraption/admasina_logo.png',$image);
         }
 
         $setData = json_encode([

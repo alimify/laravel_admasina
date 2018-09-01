@@ -57,7 +57,7 @@ class TagController extends Controller
             }
             $imageName = $slug.'-'.uniqid().'.'.$image->getClientOriginalExtension();
 
-            $tagImage = Image::make($image)->resize(500,333)->save('storage/tag/tmp.'.$image->getClientOriginalExtension());
+            $tagImage = Image::make($image)->resize(500,333)->save('temp/tmp.'.$image->getClientOriginalExtension());
             Storage::disk('public')->put('tag/'.$imageName,$tagImage);
 
 
@@ -129,7 +129,7 @@ class TagController extends Controller
             }
             $imageName = $slug.'-'.uniqid().'.'.$image->getClientOriginalExtension();
 
-            $tagImage = Image::make($image)->resize(500,333)->save('storage/tag/tmp.'.$image->getClientOriginalExtension());
+            $tagImage = Image::make($image)->resize(500,333)->save('temp/tmp.'.$image->getClientOriginalExtension());
             Storage::disk('public')->put('tag/'.$imageName,$tagImage);
 
 

@@ -89,7 +89,7 @@ class PostController extends Controller
             if (!Storage::disk('public')->exists('post')) {
                 Storage::disk('public')->makeDirectory('post');
             }
-            $postImage = Image::make($image)->resize(512,350)->save('storage/post/tmp.'.$image->getClientOriginalExtension());
+            $postImage = Image::make($image)->resize(512,350)->save('temp/tmp.'.$image->getClientOriginalExtension());
             Storage::disk('public')->put('post/'.$imageName,$postImage);
 
         }
@@ -217,7 +217,7 @@ class PostController extends Controller
             if(Storage::disk('public')->exists('post/'.$post->image)){
                 Storage::disk('public')->delete('book/'.$post->image);
             }
-            $postImage = Image::make($image)->resize(512,350)->save('storage/post/tmp.'.$image->getClientOriginalExtension());
+            $postImage = Image::make($image)->resize(512,350)->save('temp/tmp.'.$image->getClientOriginalExtension());
             Storage::disk('public')->put('post/'.$imageName,$postImage);
 
         }

@@ -59,7 +59,7 @@ class BookCategoryController extends Controller
 
             $imageName = $slug.'-'.uniqid().'.'.$image->getClientOriginalExtension();
 
-            $categoryImage = Image::make($image)->resize(500,333)->save('storage/category/tmp.'.$image->getClientOriginalExtension());
+            $categoryImage = Image::make($image)->resize(500,333)->save('temp/tmp.'.$image->getClientOriginalExtension());
             Storage::disk('public')->put('category/'.$imageName,$categoryImage);
         }else{
             $imageName = "default.png";
@@ -131,7 +131,7 @@ class BookCategoryController extends Controller
 
             $imageName = $slug.'-'.uniqid().'.'.$image->getClientOriginalExtension();
 
-            $categoryImage = Image::make($image)->resize(500,333)->save('storage/category/tmp.'.$image->getClientOriginalExtension());
+            $categoryImage = Image::make($image)->resize(500,333)->save('temp/tmp.'.$image->getClientOriginalExtension());
             Storage::disk('public')->put('category/'.$imageName,$categoryImage);
         }else{
             $imageName = "default.png";
