@@ -26,7 +26,7 @@
         <span class="navbar-toggler-icon"></span>
     </button>
     <a class="navbar-brand" href="{{route('index')}}">
-        <img class="navbar-brand-full" src="{{asset('storage/laraption/'.Config::get('websettings.siteLogo'))}}" width="89" height="25" alt="Logo">
+        <img class="navbar-brand-full" src="{{asset(Config::get('websettings.siteLogo'))}}" width="89" height="25" alt="Logo">
         <img class="navbar-brand-minimized" src="{{asset('assets/admin/img/brand/sygnet')}}" width="30" height="30" alt="ICON">
     </a>
     <button class="navbar-toggler sidebar-toggler d-md-down-none" type="button" data-toggle="sidebar-lg-show">

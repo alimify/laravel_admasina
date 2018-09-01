@@ -59,7 +59,7 @@
 
             <div class="form-group col-sm-8">
                 <label for="image" class="font-weight-bold">Site Logo</label>
-                <img src="{{asset('storage/laraption/'.Config::get('websettings.siteLogo'))}}" class="img-thumbnail img-responsive d-block">
+                <img src="{{asset(Config::get('websettings.siteLogo'))}}" class="img-thumbnail img-responsive d-block">
                 <input type="file" class="form-control-file" name="image">
             </div>
 
