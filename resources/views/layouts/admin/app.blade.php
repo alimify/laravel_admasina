@@ -137,7 +137,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item">Home</li>
             <li class="breadcrumb-item">
-                <a href="#">Admin</a>
+                <a href="{{route('admin.dashboard')}}">Admin</a>
             </li>
             <li class="breadcrumb-item active">@yield('title')</li>
 

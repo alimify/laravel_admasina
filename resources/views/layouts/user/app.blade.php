@@ -114,7 +114,7 @@
         <ol class="breadcrumb">
             <li class="breadcrumb-item">Home</li>
             <li class="breadcrumb-item">
-                <a href="#">User</a>
+                <a href="{{route('user.profile.show')}}">User</a>
             </li>
             <li class="breadcrumb-item active">@yield('title')</li>
 
