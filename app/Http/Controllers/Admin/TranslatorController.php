@@ -71,7 +71,7 @@ class TranslatorController extends Controller
         $translator->is_active = true;
         $translator->save();
 
-     return redirect()->back();
+     return redirect()->back()->with('status','Translator Successfully Updated.');
     }
 
     /**
@@ -140,7 +140,7 @@ class TranslatorController extends Controller
         $translator->is_active = true;
         $translator->save();
 
-        return redirect()->back();
+        return redirect()->back()->with('status','Translator Successfully Updated.');
     }
 
     /**
@@ -155,7 +155,7 @@ class TranslatorController extends Controller
             Storage::disk('public')->delete('translator/'.$translator->image);
         }
         $translator->delete();
-        return redirect()->back();
+        return redirect()->back()->with('status','Translator Successfully Deleted.');
 
     }
 }

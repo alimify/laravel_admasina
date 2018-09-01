@@ -72,7 +72,7 @@ class TagController extends Controller
       $tag->is_active = true;
       $tag->image = $imageName;
       $tag->save();
-      return redirect()->back();
+      return redirect()->back()->with('status','Tag Successfully Added.');
     }
 
     /**
@@ -143,7 +143,7 @@ class TagController extends Controller
         $tag->is_active = true;
         $tag->image = $imageName;
         $tag->save();
-        return redirect()->back();
+        return redirect()->back()->with('status','Tag Successfully Updated..');
     }
 
     /**
@@ -160,6 +160,6 @@ class TagController extends Controller
         }
 
         $tag->delete();
-        return redirect()->back();
+        return redirect()->back()->with('status','Tag Successfully Deleted.');
     }
 }

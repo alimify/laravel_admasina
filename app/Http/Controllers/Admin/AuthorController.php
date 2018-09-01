@@ -72,7 +72,7 @@ class AuthorController extends Controller
         $author->is_active = $is_active;
         $author->image = $imageName;
         $author->save();
-        return redirect()->back();
+        return redirect()->back()->with('status','New Author Successfully Added.');
     }
 
     /**
@@ -142,7 +142,7 @@ class AuthorController extends Controller
         $author->is_active = $is_active;
         $author->image = $imageName;
         $author->save();
-        return redirect()->back();
+        return redirect()->back()->with('status','Author Successfully Edited.');
     }
 
     /**
@@ -158,7 +158,7 @@ class AuthorController extends Controller
             Storage::disk('public')->delete('author/'.$author->image);
         }
         $author->delete();
-        return redirect()->back();
+        return redirect()->back()->with('status','Author Successfully Deleted.');
 
     }
 }

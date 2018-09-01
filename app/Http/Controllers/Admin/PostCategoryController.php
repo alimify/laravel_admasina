@@ -73,7 +73,7 @@ class PostCategoryController extends Controller
         $category->is_active = $is_active;
         $category->save();
 
-        return redirect()->back();
+        return redirect()->back()->with('status','Post Category Successfully Added..');
     }
 
     /**
@@ -145,7 +145,7 @@ class PostCategoryController extends Controller
         $postCategory->is_active = $is_active;
         $postCategory->save();
 
-        return redirect()->back();
+        return redirect()->back()->with('status','Post Category Successfully Updated..');
     }
 
     /**
@@ -164,6 +164,6 @@ class PostCategoryController extends Controller
         $postCategory->delete();
 
 
-        return redirect()->back();
+        return redirect()->back()->with('status','Post Category Successfully Deleted..');
     }
 }

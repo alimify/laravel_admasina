@@ -90,6 +90,6 @@ class CommentController extends Controller
     public function destroy(Comment $comment)
     {
         $comment->delete();
-        return redirect()->back()->with('status','Comment Succesfully Deleted');
+        return redirect()->back()->with('status','Comment Successfully Deleted');
     }
 }

@@ -125,6 +125,6 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->back();
+        return redirect()->back()->with('status','User Successfully Deleted.');
     }
 }

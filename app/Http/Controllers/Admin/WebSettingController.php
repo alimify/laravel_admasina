@@ -76,7 +76,7 @@ class WebSettingController extends Controller
             ['optkey' => 'webSetting'],
             ['optvalue' => $setData]
         );
-        return redirect()->back();
+        return redirect()->back()->with('status','Settings Successfully Updated.');
     }
 
     /**
