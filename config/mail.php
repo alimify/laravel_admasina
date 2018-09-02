@@ -71,7 +71,7 @@ return [
     |
     */
 
-    'encryption' => env('MAIL_ENCRYPTION', 'tls'),
+    'encryption' => env('MAIL_ENCRYPTION', ''),
 
     /*
     |--------------------------------------------------------------------------
@@ -119,6 +119,8 @@ return [
             resource_path('views/vendor/mail'),
         ],
     ],
+
+
     'stream' => [
         'ssl' => [
             'allow_self_signed' => true,
