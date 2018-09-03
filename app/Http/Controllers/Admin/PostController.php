@@ -36,7 +36,7 @@ class PostController extends Controller
      */
     public function create()
     {
-        $languages = Language::all();
+        $languages = Language::all()->where('is_active',true);
         $categories = Category::all()->where('category_for','=','post');
         $tags = Tag::all();
 
@@ -139,7 +139,7 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
-        $languages = Language::all();
+        $languages = Language::all()->where('is_active',true);
         $categories = Category::all()->where('category_for','=','post');
         $tags = Tag::all();
 
