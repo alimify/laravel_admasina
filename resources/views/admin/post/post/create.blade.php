@@ -3,7 +3,7 @@
 @section('title','Post/Create')
 
 @push('css')
-    <link href="http://localhost:8000/assets/admin/css/multiselect.css" rel="stylesheet">
+    <link href="{{asset('assets/admin/css/multiselect.css')}}" rel="stylesheet">
     <link href="{{asset('assets/admin/summernote/summernote-bs4.css')}}" rel="stylesheet">
 @endpush
 
@@ -87,7 +87,7 @@
 
 @push('script')
     <script src="{{asset('assets/admin/summernote/summernote-bs4.min.js')}}"></script>
-    <script src="http://localhost:8000/assets/admin/js/multiselect.min.js"></script>
+    <script src="{{asset('assets/admin/js/multiselect.min.js')}}"></script>
 
     <script>
         $(document).ready(function() {
