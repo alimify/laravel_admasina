@@ -48,6 +48,23 @@
 
                 <div class="col-sm-5 col-md-3">
 
+                    <div class="form-group col-sm-8">
+                        <label for="author" class="font-weight-bold d-block">Author :</label>
+                        <select id="author" multiple="multiple" name="author[]">
+                            @foreach($authors as $author)
+                                <option value="{{$author->id}}">{{$author->title}}</option>
+                            @endforeach
+                        </select>
+                    </div>
+
+                    <div class="form-group col-sm-8">
+                        <label for="translator" class="font-weight-bold d-block">Translator :</label>
+                        <select id="translator" multiple="multiple" name="translator[]">
+                            @foreach($translators as $translator)
+                                <option value="{{$translator->id}}">{{$translator->title}}</option>
+                            @endforeach
+                        </select>
+                    </div>
 
                     <div class="form-group col-sm-8">
                         <label for="category" class="font-weight-bold d-block">Category :</label>
@@ -98,6 +115,16 @@
                         langData[cLang].description = contents
                     }
                 }
+            })
+
+            $('#author').multiselect({
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
+            })
+
+            $('#translator').multiselect({
+                enableFiltering: true,
+                enableCaseInsensitiveFiltering: true,
             })
 
             $('#language').multiselect({
@@ -156,6 +183,8 @@
              var data = {
                      langData: langData,
                      category: $("#category").val(),
+                     author: $("#author").val(),
+                     translator: $("#translator").val(),
                      tag: $("#tag").val(),
                      active: $("[name='active']").prop('checked')
                  },

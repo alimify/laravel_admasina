@@ -22,10 +22,13 @@
         <tr>
             <th scope="col">Image</th>
             <th scope="col">Title</th>
-            <th scope="col">Posted By</th>
+            <!--<th scope="col">Posted By</th>-->
+            <th scope="col">Authors</th>
+            <th scope="col">Translators</th>
             <th scope="col">Published</th>
-            <th>Date</th>
-            <th>Action</th>
+            <th>Views</th>
+            <th scope="col">Date</th>
+            <th scope="col">Action</th>
         </tr>
         </thead>
         <tbody>
@@ -37,8 +40,19 @@
                     {{$title->title}}
                     @endforeach
             </td>
-            <td>{{$post->user->name}}</td>
+            <!--<td>{{$post->user->name}}</td>-->
+            <td>
+                @foreach($post->authors as $author)
+                    {{$author->title}},
+                    @endforeach
+            </td>
+            <td>
+                @foreach($post->translators as $translator)
+                    {{$translator->title}},
+                    @endforeach
+            </td>
             <td> <i class="{{$post->is_active ? 'text-success fa fa-check' : 'text-danger fa fa-remove'}}"></i></td>
+            <td>{{$post->views}}</td>
             <td>{{$post->created_at}}</td>
             <td><a href="{{route('admin.post.show',$post->id)}}"><i style="font-size: 20px" class="font-weight-bold fa fa-eye"></i> </a> <a href="{{route('admin.post.edit',$post->id)}}"><i class="font-weight-bold cui-note"></i></a> <a href="javascript:void(0)" class="delete-item" data-src="{{$post->id}}"><i class="font-weight-bold cui-delete"></i></a> </td>
         </tr>

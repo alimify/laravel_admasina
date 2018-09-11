@@ -20,7 +20,7 @@ class WebSettingController extends Controller
      */
     public function index()
     {
-        $languages = Language::all();
+        $languages = Language::all()->where('is_active',true);
 
         return view('admin.main.setting',compact('languages'));
     }

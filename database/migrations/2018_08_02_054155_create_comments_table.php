@@ -17,9 +17,9 @@ class CreateCommentsTable extends Migration
             $table->increments('id');
             $table->integer('user_id');
             $table->text('comment_text');
-            $table->integer('book_id');
-            $table->integer('post_id');
-            $table->boolean('is_active')->default(1);
+            $table->integer('book_id')->nullable();
+            $table->integer('post_id')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

@@ -37,6 +37,9 @@
                                           {!!html_entity_decode($description->description)!!}
                                           @endforeach
             </div>
+            <div class="book-views row mb-3">
+                <b>Views :</b> {{$book->views}}
+            </div>
             <div class="book-rating row mb-3">
                 <b>Rating :</b> {{$book->rating}}
             </div>

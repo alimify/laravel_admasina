@@ -19,9 +19,14 @@ class AppServiceProvider extends ServiceProvider
         Schema::defaultStringLength(191);
 
         ///Load Settings
-        $settings = json_decode(Laraption::where('optkey','webSetting')->first()->optvalue);
+        $getSetting = Laraption::where('optkey','webSetting')->first() ?? false;
+        if(isset($getSetting) && $getSetting){
+
+        $settings = json_decode($getSetting->optvalue);
         foreach ($settings as $key => $setting){
             Config::set('websettings.'.$key, $setting);
+        }
+
         }
     }
 

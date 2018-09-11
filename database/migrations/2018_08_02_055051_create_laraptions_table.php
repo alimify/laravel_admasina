@@ -15,9 +15,9 @@ class CreateLaraptionsTable extends Migration
     {
         Schema::create('laraptions', function (Blueprint $table) {
             $table->increments('id');
-            $table->string('optkey');
-            $table->text('optvalue');
-            $table->boolean('is_active')->default(1);
+            $table->string('optkey')->nullable();
+            $table->text('optvalue')->nullable();
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

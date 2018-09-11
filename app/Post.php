@@ -36,4 +36,12 @@ class Post extends Model
     public function categories(){
         return $this->belongsToMany('App\Category');
     }
+
+    public function authors(){
+        return $this->belongsToMany('App\Author');
+    }
+
+    public function translators(){
+        return $this->belongsToMany('App\Translator');
+    }
 }

@@ -17,8 +17,8 @@ class CreateAuthorsTable extends Migration
             $table->increments('id');
             $table->string('title');
             $table->string('slug');
-            $table->string('image');
-            $table->boolean('is_active')->default(1);
+            $table->string('image')->default('default.png');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

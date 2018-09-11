@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers\Admin;
 
+use App\Author;
+use App\Translator;
 use App\Category;
 use App\Description;
 use App\Language;
@@ -36,6 +38,9 @@ class PostController extends Controller
      */
     public function create()
     {
+        $authors = Author::all();
+        $translators = Translator::all();
+
         $languages = Language::all()->where('is_active',true);
         $categories = Category::all()->where('category_for','=','post');
         $tags = Tag::all();
@@ -50,7 +55,7 @@ class PostController extends Controller
             ];
         }
 
-        return view('admin.post.post.create',compact('languages','categories','tags',
+        return view('admin.post.post.create',compact('authors','translators','languages','categories','tags',
             'langData'));
     }
 
@@ -105,6 +110,8 @@ class PostController extends Controller
             $post->save();
             $post->titles()->attach($titleData);
             $post->descriptions()->attach($descriptionData);
+            $post->authors()->attach($mainData->author);
+            $post->translators()->attach($mainData->translator);
             $post->categories()->attach($mainData->category);
             $post->tags()->attach($mainData->tag);
 
@@ -139,12 +146,16 @@ class PostController extends Controller
      */
     public function edit(Post $post)
     {
+        $authors = Author::all();
+        $translators = Translator::all();
         $languages = Language::all()->where('is_active',true);
         $categories = Category::all()->where('category_for','=','post');
         $tags = Tag::all();
 
         $postMainTitles = $post->titles;
         $postMainDescriptions = $post->descriptions;
+        $postMainAuthors = $post->authors;
+        $postMainTranslators = $post->translators;
         $postMainCategories = $post->categories;
         $postMainTags = $post->tags;
 
@@ -168,6 +179,19 @@ class PostController extends Controller
             ];
         }
 
+        $authorIdArray = [];
+        foreach ($postMainAuthors as $singleAuthorData){
+            $authorIdArray[] = $singleAuthorData->id;
+        }
+
+
+        $translatorIdArray = [];
+        foreach ($postMainTranslators as $singleTranslatorData){
+            $translatorIdArray[] = $singleTranslatorData->id;
+        }
+
+
+
         $categoryIdArray = [];
         foreach ($postMainCategories as $singlePostMainCategory){
             $categoryIdArray[] = $singlePostMainCategory->id;
@@ -178,8 +202,8 @@ class PostController extends Controller
             $tagIdArray[] = $singlePostMainTag->id;
         }
 
-        return view('admin.post.post.edit',compact('post','languages','categories','tags','langData',
-            'categoryIdArray','tagIdArray'));
+        return view('admin.post.post.edit',compact('post','authors','translators','languages','categories','tags','langData',
+            'categoryIdArray','tagIdArray','authorIdArray','translatorIdArray'));
     }
 
     /**
@@ -228,6 +252,8 @@ class PostController extends Controller
             $post->save();
             $post->titles()->sync($titleData);
             $post->descriptions()->sync($descriptionData);
+            $post->authors()->sync($mainData->author);
+            $post->translators()->sync($mainData->translator);
             $post->categories()->sync($mainData->category);
             $post->tags()->sync($mainData->tag);
 

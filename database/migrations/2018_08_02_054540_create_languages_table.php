@@ -19,8 +19,8 @@ class CreateLanguagesTable extends Migration
             $table->string('language');
             $table->string('short_code');
             $table->string('slug');
-            $table->string('image');
-            $table->boolean('is_active')->default(1);
+            $table->string('image')->default('default.png');
+            $table->boolean('is_active')->default(true);
             $table->timestamps();
         });
     }

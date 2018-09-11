@@ -29,25 +29,38 @@
         </div>
 
         <div class="border container-fluid">
-            <div class="book-image row mb-3">
+            <div class="post-image row mb-3">
                 <img class="img-thumbnail" src="{{asset('storage/post/'.$post->image)}}" alt="">
             </div>
-            <div class="book-description row mb-3">
+            <div class="post-description row mb-3">
                 <b>Description : </b> @foreach($post->description as $description)
                     {!!html_entity_decode($description->description)!!}
                 @endforeach
             </div>
-            <div class="book-rating row mb-3">
+            <div class="post-rating row mb-3">
                 <b>Views :</b> {{$post->views}}
             </div>
 
-            <div class="book-category row mb-3">
+            <div class="post-author row mb-3">
+                <b>Author : </b> @foreach($post->authors as $author)
+                    <span class="">{{$author->title}} , </span>
+                @endforeach
+            </div>
+
+            <div class="post-translator row mb-3">
+                <b>Translator : </b> @foreach($post->translators as $translator)
+                    <span class="">{{$translator->title}} , </span>
+                @endforeach
+            </div>
+
+
+            <div class="post-category row mb-3">
                 <b>Category : </b> @foreach($post->categories as $category)
                     <span class="">{{$category->title}} , </span>
                 @endforeach
             </div>
 
-            <div class="book-tag row mb-3">
+            <div class="post-tag row mb-3">
                 <b>Tags : </b> @foreach($post->tags as $tag)
                     <span class="">{{$tag->title}} , </span>
                 @endforeach

@@ -20,6 +20,7 @@
             <th scope="col">Author</th>
             <th scope="col">Translator</th>
             <th scope="col">Published</th>
+            <th scope="col">Views</th>
             <th>Date</th>
             <th>Action</th>
         </tr>
@@ -51,6 +52,9 @@
             <td>
                 <i class="{{$book->is_active ? 'text-success fa fa-check' : 'text-danger fa fa-remove'}}"></i>
 
+            </td>
+            <td>
+                {{$book->views}}
             </td>
             <td>{{$book->created_at}}</td>
             <td><a href="{{route('admin.book.show',$book->id)}}"><i style="font-size: 20px" class="font-weight-bold fa fa-eye"></i> </a> <a href="{{route('admin.book.edit',$book->id)}}"><i class="font-weight-bold cui-note"></i></a> <a href="javascript:void(0)" class="delete-item" data-src="{{$book->id}}"><i class="font-weight-bold cui-delete"></i></a> </td>
