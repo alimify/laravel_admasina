@@ -53,7 +53,7 @@
     </div><!-- conatiner -->
 </header>
 
-
+@include('layouts.admin.notice')
 @yield('content')
 
 <footer>

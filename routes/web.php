@@ -17,6 +17,8 @@ Route::get('/aboutus','FrontEnd\HomeController@aboutus')->name('aboutus');
 Route::get('/contactus','FrontEnd\HomeController@contactus')->name('contactus');
 Route::get('/privacy','FrontEnd\HomeController@privacy')->name('privacy');
 Route::get('/language','FrontEnd\HomeController@language')->name('language');
+Route::post('/sendcontactus','FrontEnd\HomeController@sendcontactus')->name('sendcontactus');
+Route::get('/set_language/{id}','FrontEnd\HomeController@set_language')->name('set_language');
 
 Auth::routes();
 

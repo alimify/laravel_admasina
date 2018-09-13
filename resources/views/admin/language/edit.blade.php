@@ -36,7 +36,7 @@
             </div>
 
             <div class="form-group col-sm-8">
-                <a href="{{route('admin.language.index')}}" class="btn btn-primary btn-danger">BACK</a> <input class="btn btn-primary" type="submit" value="ADD">
+                <a href="{{route('admin.language.index')}}" class="btn btn-primary btn-danger">BACK</a> <input class="btn btn-primary" type="submit" value="EDIT">
             </div>
             <br>
 

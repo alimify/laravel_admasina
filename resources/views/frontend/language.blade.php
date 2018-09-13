@@ -22,9 +22,13 @@
 
 
 
-                            <h3 class="title text-center"><b>About Us</b></h3>
-
-                            {!! html_entity_decode(Config::get('system.setting.aboutus')) !!}
+                            <h3 class="title text-center"><b>Language</b></h3>
+                             <h6>Select Your default language</h6>
+                            <ul class="border border-dark">
+                              @foreach($languages as $language)
+                                  <li class="d-block"><a class="color-skyblue font-weight-bold" href="{{route('set_language',$language->id)}}">{{$language->language}}</a></li>
+                                  @endforeach
+                            </ul>
 
                         </div><!-- blog-post-inner -->
 

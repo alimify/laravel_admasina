@@ -1,6 +1,6 @@
 @extends('layouts.frontend.app')
 
-@section('title','WebTitle')
+@section('title','CONTACT US')
 
 @push('css')
 
@@ -22,10 +22,40 @@
 
 
 
-                            <h3 class="title text-center"><b>About Us</b></h3>
+                            <h3 class="title text-center"><b>CONTACT US</b></h3>
+                            <form method="post" action="{{route('sendcontactus')}}" enctype="multipart/form-data">
+                                @method('POST')
+                                @csrf
+                                <div class="form-group">
+                                    <label for="name" class="font-weight-bold">Name</label>
+                                    <input type="text" class="form-control" name="name" required>
+                                </div>
 
-                            {!! html_entity_decode(Config::get('system.setting.aboutus')) !!}
+                                <div class="form-group">
+                                    <label for="email" class="font-weight-bold">Email</label>
+                                    <input type="text" class="form-control" name="email" required>
+                                </div>
 
+                                <div class="form-group">
+                                    <label for="phone" class="font-weight-bold">Phone</label>
+                                    <input type="text" class="form-control" name="phone">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="name" class="font-weight-bold">Attachment</label>
+                                    <input type="file" class="form-control" name="file">
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="message" class="font-weight-bold">Message</label>
+                                    <textarea class="form-control" name="message"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <input type="submit" class="btn btn-primary btn-success" name="submit" value="Send Message">
+                                </div>
+
+                            </form>
                         </div><!-- blog-post-inner -->
 
 

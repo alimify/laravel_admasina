@@ -3,6 +3,7 @@
 namespace App;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\DB;
 
@@ -25,9 +26,10 @@ class Book extends Model
     }
 
     public function title(){
+       $language = Config::get('websettings.defaultLanguage');
 
         return $this->belongsToMany('App\Title')
-                      ->where('book_title.language_id',Config::get('websettings.defaultLanguage'));
+                      ->where('book_title.language_id',$language);
     }
 
     public function titles(){
