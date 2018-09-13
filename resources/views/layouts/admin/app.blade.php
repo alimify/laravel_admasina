@@ -126,7 +126,7 @@
 
                 <li class="nav-item nav-dropdown">
                     <a class="nav-link" href="{{route('admin.websetting.index')}}">
-                        <i class="fa fa-wrench text-muted"></i> Site Setting</a>
+                        <i class="fa fa-wrench text-muted"></i> System Setting</a>
                 </li>
             </ul>
         </nav>

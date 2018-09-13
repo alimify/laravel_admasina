@@ -13,8 +13,10 @@
 
 Route::get('/', 'FrontEnd\HomeController@index')->name('index');
 Route::get('/home', 'FrontEnd\HomeController@index')->name('home');
-
-
+Route::get('/aboutus','FrontEnd\HomeController@aboutus')->name('aboutus');
+Route::get('/contactus','FrontEnd\HomeController@contactus')->name('contactus');
+Route::get('/privacy','FrontEnd\HomeController@privacy')->name('privacy');
+Route::get('/language','FrontEnd\HomeController@language')->name('language');
 
 Auth::routes();
 
@@ -46,6 +48,9 @@ Route::group(['as' => 'admin.','prefix' => 'admin','namespace' => 'Admin','middl
     Route::get('/book/changeStatus/{book}','BookController@ChangeStatus')->name('book.changeStatus');
     Route::get('/post/changeStatus/{post}','PostController@ChangeStatus')->name('post.changeStatus');
 
+    /*System Setting */
+    Route::resource('systemSetting','SystemSetting');
+
 });
 
 
@@ -65,5 +70,3 @@ Route::group(['as' => 'user.','prefix' => 'user','namespace' => 'User','middlewa
 Route::get('user/profile/{id?}','User\UserController@profile')->name('user.profile.show');
 
 Auth::routes();
-
-Route::get('/home', 'HomeController@index')->name('home');

@@ -27,6 +27,13 @@ class AppServiceProvider extends ServiceProvider
             Config::set('websettings.'.$key, $setting);
         }
 
+            $getSets = Laraption::where('optkey','REGEXP','system.setting.')
+                ->get();
+
+            foreach ($getSets as $gSetting){
+                Config::set($gSetting->optkey, $gSetting->optvalue);
+            }
+
         }
     }
 

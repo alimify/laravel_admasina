@@ -26,8 +26,9 @@
 
 	.no-right-padding{ padding-right: 15px; }
 
-	
-	/* MENU */
+    .main-post .post-icons-area{ padding-right: 0px; }
+
+    /* MENU */
 	
 	/* SEARCH AREA */
 
@@ -212,4 +213,31 @@
 @media only screen and (max-width: 290px) {
 	
 	
+}
+
+
+/* Screens Resolution : 479px
+-------------------------------------------------------------------------- */
+@media only screen and (max-width: 479px) {
+
+    /* ---------------------------------
+    1. PRIMARY STYLES
+    --------------------------------- */
+
+    body{ font-size: 14px;  }
+
+    /* ---------------------------------
+    6. MAIN POST ( LEF AREA )
+    --------------------------------- */
+
+    /* ICONS */
+
+    .main-post ul.post-icons,
+    .main-post ul.icons{ float: none; margin-top: 10px; }
+
+    .main-post ul.post-icons > li > a > i,
+    .main-post ul.icons > li > a > i{ padding: 0; padding-right: 10px; }
+
+
+
 }

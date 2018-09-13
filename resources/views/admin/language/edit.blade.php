@@ -13,7 +13,7 @@
     <div class="bg-white">
         <form method="post" action="{{route('admin.language.update',$language->id)}}" enctype="multipart/form-data">
             @csrf
-            @method('POST')
+            @method('PUT')
             <div class="form-group col-sm-8">
                 <label for="title" class="font-weight-bold">Country</label>
                 <input type="text" class="form-control" name="country" value="{{$language->country}}">

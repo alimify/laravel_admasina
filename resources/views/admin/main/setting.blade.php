@@ -11,6 +11,7 @@
 @section('content')
 
     <div class="bg-white">
+        <a href="{{route('admin.systemSetting.index')}}" class="btn btn-primary btn-success">More Settings</a>
         <form method="post" action="{{route('admin.websetting.store')}}" enctype="multipart/form-data">
             @csrf
             @method('POST')
