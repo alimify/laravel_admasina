@@ -13,13 +13,19 @@
 
 Route::get('/', 'FrontEnd\HomeController@index')->name('index');
 Route::get('/home', 'FrontEnd\HomeController@index')->name('home');
+Route::get('/search','FrontEnd\HomeController@index')->name('search');
 Route::get('/aboutus','FrontEnd\HomeController@aboutus')->name('aboutus');
 Route::get('/contactus','FrontEnd\HomeController@contactus')->name('contactus');
 Route::get('/privacy','FrontEnd\HomeController@privacy')->name('privacy');
 Route::get('/language','FrontEnd\HomeController@language')->name('language');
 Route::post('/sendcontactus','FrontEnd\HomeController@sendcontactus')->name('sendcontactus');
 Route::get('/set_language/{id}','FrontEnd\HomeController@set_language')->name('set_language');
-
+Route::get('/article/view/{id}','FrontEnd\HomeController@viewArticle')->name('viewArticle');
+Route::get('/book/view/{id}','FrontEnd\HomeController@viewBook')->name('viewBook');
+Route::get('/book/{type?}/{id?}','FrontEnd\HomeController@book')->name('book');
+Route::get('/article/{type?}/{id?}','FrontEnd\HomeController@article')->name('article');
+Route::get('/comments/{type}/{id}','FrontEnd\HomeController@comments')->name('comments');
+Route::get('/rating/{type}/{id}/{rating}','FrontEnd\HomeController@rating')->name('rating');
 Auth::routes();
 
 
@@ -66,6 +72,8 @@ Route::group(['as' => 'user.','prefix' => 'user','namespace' => 'User','middlewa
     Route::put('profile/{id?}','UserController@updateProfile')->name('profile.update');
     Route::put('setting/{id?}','UserController@updateSetting')->name('setting.update');
     Route::put('password/{id?}','UserController@updatePassword')->name('password.update');
+
+    Route::post('make-comment/{type}/{id}','UserController@makeComment')->name('makeComment');
 
 });
 

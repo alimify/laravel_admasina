@@ -59,4 +59,12 @@ class Book extends Model
         return $this->belongsToMany('App\Comment');
     }
 
+    public function eightComments(){
+        return $this->hasMany('App\Comment')->latest()->limit(8);
+    }
+
+    public function rate(){
+        return $this->hasMany('App\Rating');
+    }
+
 }

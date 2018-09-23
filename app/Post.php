@@ -44,4 +44,15 @@ class Post extends Model
     public function translators(){
         return $this->belongsToMany('App\Translator');
     }
+
+    public function comments(){
+        return $this->belongsToMany('App\Comment');
+    }
+
+    public function eightComments(){
+        $page = $_REQUEST['page']??1;
+        $page = intval($page)*8;
+        return $this->hasMany('App\Comment')->latest()->limit($page);
+    }
+
 }

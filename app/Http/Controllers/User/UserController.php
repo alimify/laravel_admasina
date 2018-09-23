@@ -2,6 +2,9 @@
 
 namespace App\Http\Controllers\User;
 
+use App\Book;
+use App\Comment;
+use App\Post;
 use App\User;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -132,6 +135,35 @@ class UserController extends Controller
         }
 
       return redirect()->back()->with('status','Password Successfully Updated.');
+    }
+
+
+    public function makeComment(Request $request,$type,$id){
+        if(!$type || !$id){
+            return abort(404);
+        }
+
+        $comment = new Comment();
+        $comment->user_id = Auth::id();
+        $comment->comment_text = $request->message;
+        if($type == 'book'){
+        $comment->book_id = $id;
+        }elseif ($type == 'post'){
+        $comment->post_id = $id;
+        }
+        $comment->is_active = true;
+        $comment->save();
+
+        if($type == 'book') {
+        $book = Book::find($id);
+        $book->comments()->attach([$comment->id]);
+        }elseif ($type == 'post'){
+         $post = Post::find($id);
+         $post->comments()->attach([$comment->id]);
+        }
+
+
+        return redirect()->back()->with('status','Comment Successfully Posted.');
     }
 
 

@@ -1,6 +1,6 @@
 @extends('layouts.frontend.app')
 
-@section('title','WebTitle')
+@section('title',Config::get('websettings.homePageTitle'))
 
 @push('css')
 
@@ -16,7 +16,7 @@
 
 @foreach($books as $book)
             <div class="swiper-slide">
-                <a class="slider-category" href="#">
+                <a class="slider-category" href="{{route('viewBook',$book->id)}}">
                     <div class="blog-image"><img src="{{asset('storage/book/'.$book->image)}}" alt="book image"></div>
 
                     <div class="category">
@@ -50,7 +50,7 @@
                     <div class="col-md-4 col-sm-12">
                         <div class="card h-100">
                             <div class="single-post post-style-1">
-                                <a href="#">
+                                <a href="{{route('viewBook',$book->id)}}">
                                     <div class="blog-image"><img src="{{asset('storage/book/'.$book->image)}}" alt="image"></div>
 
 
@@ -74,7 +74,7 @@
 
                 </div><!-- row -->
 
-                <a class="load-more-btn" href="#"><b>SEE MORE</b></a>
+                <a class="load-more-btn" href="{{route('book')}}"><b>SEE MORE</b></a>
 
             </div><!-- col-lg-8 col-md-12 -->
 
@@ -87,7 +87,7 @@
                         <ul>
    @foreach($articles as $article)
                             <li>
-                                <a href="#">{{$article->title->first()->title}}</a>
+                                <a href="{{route('viewArticle',$article->id)}}">{{$article->title->first()->title}}</a>
                                 <span class="color-gray d-block">Posted : {{$article->created_at->diffForHumans()}}</span>
                             </li>
     @endforeach
@@ -113,7 +113,7 @@
                         <h4 class="title"><b>BOOK CATEGORIES</b></h4>
                         <ul>
      @foreach($bookCategories as $bookCategory)
-                            <li><a href="#">{{$bookCategory->title}}</a></li>
+                            <li><a href="{{route('book',['type' => 'category','id' => $bookCategory->id])}}">{{$bookCategory->title}}</a></li>
       @endforeach
                         </ul>
 
@@ -124,7 +124,7 @@
                         <div class="title"><b>ARTICLE CATEGORIES</b></div>
                         <ul>
       @foreach($postCategories as $postCategory)
-                            <li><a href="#">{{$postCategory->title}}</a></li>
+                            <li><a href="{{route('article',['type' => 'category','id' => $postCategory->id])}}">{{$postCategory->title}}</a></li>
       @endforeach
                         </ul>
 

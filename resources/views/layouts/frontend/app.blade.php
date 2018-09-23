@@ -35,8 +35,8 @@
         <div class="menu-nav-icon" data-nav-menu="#main-menu"><i class="ion-navicon"></i></div>
 
         <ul class="main-menu visible-on-click" id="main-menu">
-            <li><a href="">BOOK</a></li>
-            <li><a href="">ARTICLE</a></li>
+            <li><a href="{{route('book')}}">BOOK</a></li>
+            <li><a href="{{route('article')}}">ARTICLE</a></li>
             <li><a href="{{route('aboutus')}}">ABOUT US</a></li>
             <li><a href="{{route('privacy')}}">PRIVACY</a></li>
             <li><a href="{{route('contactus')}}">CONTACT US</a></li>

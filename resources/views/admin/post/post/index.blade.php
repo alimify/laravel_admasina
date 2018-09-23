@@ -36,9 +36,7 @@
         <tr>
             <th><img src="{{asset('storage/post/'.$post->image)}}" alt="" width="80px"></th>
             <td>
-                @foreach($post->title as $title)
-                    {{$title->title}}
-                    @endforeach
+                    {{$post->title->first()->title}}
             </td>
             <!--<td>{{$post->user->name}}</td>-->
             <td>

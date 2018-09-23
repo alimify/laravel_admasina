@@ -36,19 +36,24 @@
                                     <input type="text" class="form-control" name="email" required>
                                 </div>
 
-                                <div class="form-group">
+                                <!--<div class="form-group">
                                     <label for="phone" class="font-weight-bold">Phone</label>
                                     <input type="text" class="form-control" name="phone">
-                                </div>
+                                </div>-->
 
                                 <div class="form-group">
-                                    <label for="name" class="font-weight-bold">Attachment</label>
-                                    <input type="file" class="form-control" name="file">
+                                    <label for="subject" class="font-weight-bold">Subject</label>
+                                    <input type="text" class="form-control" name="subject">
                                 </div>
 
                                 <div class="form-group">
                                     <label for="message" class="font-weight-bold">Message</label>
                                     <textarea class="form-control" name="message"></textarea>
+                                </div>
+
+                                <div class="form-group">
+                                    <label for="attachment" class="font-weight-bold">Attachment</label>
+                                    <input type="file" class="form-control" name="file">
                                 </div>
 
                                 <div class="form-group">
