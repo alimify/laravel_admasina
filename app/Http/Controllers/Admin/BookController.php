@@ -121,10 +121,12 @@ class BookController extends Controller
             if(isset($image) && $image){
                 $imageName = uniqid().str_slug(Carbon::now()).'.'.$image->getClientOriginalExtension();
 
+
                 if (!Storage::disk('public')->exists('book')) {
                     Storage::disk('public')->makeDirectory('book');
                 }
-                $bookImage = Image::make($image)->resize(512,350)->save('temp/tmp.'.$image->getClientOriginalExtension());
+
+                $bookImage = Image::make($image)->resize(512,512)->save('temp/tmp.'.$image->getClientOriginalExtension());
                 Storage::disk('public')->put('book/'.$imageName,$bookImage);
 
             }
@@ -361,7 +363,7 @@ class BookController extends Controller
                     Storage::disk('public')->delete('book/'.$book->image);
                 }
 
-                $bookImage = Image::make($image)->resize(512,350)->save('temp/tmp.'.$image->getClientOriginalExtension());
+                $bookImage = Image::make($image)->resize(512,512)->save('temp/tmp.'.$image->getClientOriginalExtension());
                 Storage::disk('public')->put('book/'.$imageName,$bookImage);
 
             }else{

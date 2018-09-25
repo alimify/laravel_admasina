@@ -12,7 +12,7 @@
 
     <section class="blog-area section">
         <div class="container">
-
+            <h4 class="title text-left"><b>Total Books ({{$books->count()}})</b></h4>
             <div class="row">
 
                 <div class="col-lg-8 col-md-12">
@@ -26,8 +26,11 @@
 
 
                                             <div class="blog-info">
-
-                                                <span class="title"><b>{{$book->title->first()->title}}</b></span>
+                                                @php
+                                                $title = $book->title->first()->title;
+                                                $title = $title ? $title : $book->dTitle->first()->title;
+                                                @endphp
+                                                <span class="title"><b>{{$title}}</b></span>
 
                                                 <ul class="post-footer">
                                                     <li><i class="ion-chatbubble"></i>{{$book->comments->count()}}</li>

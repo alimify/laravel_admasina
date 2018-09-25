@@ -15,7 +15,11 @@ class Post extends Model
     }
 
     public function title(){
+        return $this->belongsToMany('App\Title')
+            ->where('post_title.language_id',Config::get('language'));
+    }
 
+    public function dTitle(){
         return $this->belongsToMany('App\Title')
             ->where('post_title.language_id',Config::get('websettings.defaultLanguage'));
     }
@@ -25,6 +29,11 @@ class Post extends Model
     }
 
     public function description(){
+        return $this->belongsToMany('App\Description')
+            ->where('description_post.language_id',Config::get('language'));
+    }
+
+    public function dDescription(){
         return $this->belongsToMany('App\Description')
             ->where('description_post.language_id',Config::get('websettings.defaultLanguage'));
     }

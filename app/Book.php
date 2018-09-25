@@ -26,11 +26,18 @@ class Book extends Model
     }
 
     public function title(){
-       $language = Config::get('websettings.defaultLanguage');
+        $language = Config::get('language');
 
         return $this->belongsToMany('App\Title')
                       ->where('book_title.language_id',$language);
     }
+
+    public function dTitle(){
+
+        return $this->belongsToMany('App\Title')
+                     ->where('book_title.language_id',Config::get('websettings.defaultLanguage'));
+    }
+
 
     public function titles(){
         return $this->belongsToMany('App\Title')->withPivot('language_id');
@@ -43,8 +50,14 @@ class Book extends Model
     }
 
     public function description(){
+        $langauge = Config::get('language');
         return $this->belongsToMany('App\Description')
-                     ->where('book_description.language_id',Config::get('websettings.defaultLanguage'));
+                     ->where('book_description.language_id',$langauge);
+    }
+
+    public function dDescription(){
+        return $this->belongsToMany('App\Description')
+            ->where('book_description.language_id',Config::get('websettings.defaultLanguage'));
     }
 
     public function datalinks(){

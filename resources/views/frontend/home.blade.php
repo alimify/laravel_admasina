@@ -7,7 +7,6 @@
 @endpush
 
 @section('content')
-
 <div class="main-slider">
     <div class="swiper-container position-static" data-slide-effect="slide" data-autoheight="false"
          data-swiper-speed="500" data-swiper-autoplay="10000" data-swiper-margin="0" data-swiper-slides-per-view="4"
@@ -22,8 +21,11 @@
                     <div class="category">
                         <div class="display-table center-text">
                             <div class="display-table-cell">
-
-                                    <h3><b>{{$book->title->first()->title}}</b></h3>
+                                    @php
+                                     $title = $book->title->first()->title;
+                                     $title = $title ? $title : $book->dTitle->first()->title;
+                                    @endphp
+                                    <h3><b>{{$title}}</b></h3>
                             </div>
                         </div>
                     </div>
@@ -55,8 +57,12 @@
 
 
                                     <div class="blog-info">
+                                        @php
+                                        $title = $book->title->first()->title;
+                                        $title = $title ? $title : $book->dTitle->first()->title;
+                                        @endphp
 
-                                        <span class="title"><b>{{$book->title->first()->title}}</b></span>
+                                        <span class="title"><b>{{$title}}</b></span>
 
                                         <ul class="post-footer">
                                             <li><i class="ion-chatbubble"></i>{{$book->comments->count()}}</li>
@@ -87,7 +93,11 @@
                         <ul>
    @foreach($articles as $article)
                             <li>
-                                <a href="{{route('viewArticle',$article->id)}}">{{$article->title->first()->title}}</a>
+                                @php
+                                $title = $article->title->first()->title;
+                                $title = $title ? $title : $article->dTitle->first()->title;
+                                @endphp
+                                <a href="{{route('viewArticle',$article->id)}}">{{$title}}</a>
                                 <span class="color-gray d-block">Posted : {{$article->created_at->diffForHumans()}}</span>
                             </li>
     @endforeach

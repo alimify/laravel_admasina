@@ -60,14 +60,13 @@ class HomeController extends Controller
 
         if(Auth::check() && Auth::id()) {
             Laraption::updateOrCreate(
-                ['optkey' => 'user.language.' . Auth::id()],
+                ['optkey' => 'user.setting.' . Auth::id().'.language'],
                 ['optvalue' => $id]
             );
-            Cookie::forget('language');
-        }else{
+            Cookie::queue(Cookie::forget('language', $id));
+        }else {
             Cookie::queue(Cookie::forever('language', $id));
         }
-
         return redirect()->back()->with('status','New Language Successfully Set.');
     }
 
@@ -117,6 +116,8 @@ class HomeController extends Controller
     public function viewArticle($id){
 
         $article = Post::find($id);
+        $article->views = $article->views+1;
+        $article->save();
         $articles = Post::take(4)->inRandomOrder()
                                  ->get();
 
@@ -126,11 +127,16 @@ class HomeController extends Controller
 
     public function viewBook($id){
         $book = Book::find($id);
+        $book->views = $book->views+1;
+        $book->save();
         $books = Book::take(4)->inRandomOrder()
                               ->get();
 
         return response()->view('frontend.viewBook',compact('book','books'));
     }
+
+
+
 
 
 
@@ -166,6 +172,8 @@ class HomeController extends Controller
 
 
 
+
+
     public function article($type = null,$id = null){
 
         $postCategories = Category::where('category_for','post')->where('is_active',true)
@@ -198,6 +206,8 @@ class HomeController extends Controller
         return response()->view('frontend.article',compact('postCategories','articles'));
     }
 
+
+
     public function comments(Request $request,$type,$id){
         if(!$type || !$id){
             abort(404);
@@ -215,6 +225,8 @@ class HomeController extends Controller
         return response()->view('frontend.comments',compact('comments'));
     }
 
+
+
     public function rating($type,$id,$rating){
         if(!$type || !$id){
             return;
@@ -230,5 +242,11 @@ class HomeController extends Controller
         $current_rating = Rating::where('book_id',$id)->avg('rate');
 
         return intval($current_rating);
+    }
+
+
+
+    public function search(){
+        return response()->view('frontend.search');
     }
 }

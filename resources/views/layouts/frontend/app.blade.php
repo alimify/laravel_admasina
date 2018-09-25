@@ -30,23 +30,21 @@
 <header>
     <div class="container-fluid position-relative no-side-padding">
 
-        <a href="{{route('index')}}" class="logo"><img src="images/logos.png" alt="Logo Image"></a>
+        <a href="{{route('index')}}" class="logo"><img src="{{asset(Config::get('websettings.siteLogo'))}}" alt="Logo Image" width="80px"></a>
 
         <div class="menu-nav-icon" data-nav-menu="#main-menu"><i class="ion-navicon"></i></div>
 
         <ul class="main-menu visible-on-click" id="main-menu">
             <li><a href="{{route('book')}}">BOOK</a></li>
             <li><a href="{{route('article')}}">ARTICLE</a></li>
-            <li><a href="{{route('aboutus')}}">ABOUT US</a></li>
-            <li><a href="{{route('privacy')}}">PRIVACY</a></li>
             <li><a href="{{route('contactus')}}">CONTACT US</a></li>
             <li><a href="{{route('language')}}">LANGUAGE</a></li>
         </ul><!-- main-menu -->
 
         <div class="src-area">
-            <form>
+            <form action="{{route('search')}}" method="get">
                 <button class="src-btn" type="submit"><i class="ion-ios-search-strong"></i></button>
-                <input class="src-input" type="text" placeholder="Type of search">
+                <input class="src-input" type="text" placeholder="Type of search" name="q">
             </form>
         </div>
 

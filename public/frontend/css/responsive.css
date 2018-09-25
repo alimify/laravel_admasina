@@ -4,9 +4,22 @@
 /* Screens Resolution : 992px
 -------------------------------------------------------------------------- */
 @media only screen and (max-width: 1200px) {
-	
+    /* SEARCH AREA */
+
+
 	
 }
+
+@media only screen and (max-width: 992px) {
+    /* SEARCH AREA */
+    header .src-area{ width: 100%; }
+
+}
+
+@media only screen and (min-width: 992px) {
+    header .src-area{ width: 30%; }
+}
+
 
 /* Screens Resolution : 992px
 -------------------------------------------------------------------------- */
@@ -29,10 +42,6 @@
     .main-post .post-icons-area{ padding-right: 0px; }
 
     /* MENU */
-	
-	/* SEARCH AREA */
-
-	header .src-area{ width: 30%; }
 	
 }
 
@@ -79,7 +88,7 @@
 	
 	/* SEARCH AREA */
 
-	header .src-area{ width: 100%; }
+	/*header .src-area{ width: 100%; }*/
 	
 	
 	/* NAV ICON */
@@ -157,11 +166,6 @@
 
 	
 	/* MENU */
-	
-	/* SEARCH AREA */
-
-	header .src-area{ width: 30%; }
-
 
 	/* ---------------------------------
 	6. MAIN POST ( LEF AREA )

@@ -13,7 +13,7 @@
 
 Route::get('/', 'FrontEnd\HomeController@index')->name('index');
 Route::get('/home', 'FrontEnd\HomeController@index')->name('home');
-Route::get('/search','FrontEnd\HomeController@index')->name('search');
+Route::get('/search','FrontEnd\HomeController@search')->name('search');
 Route::get('/aboutus','FrontEnd\HomeController@aboutus')->name('aboutus');
 Route::get('/contactus','FrontEnd\HomeController@contactus')->name('contactus');
 Route::get('/privacy','FrontEnd\HomeController@privacy')->name('privacy');

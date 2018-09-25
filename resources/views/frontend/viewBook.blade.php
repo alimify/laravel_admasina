@@ -1,9 +1,18 @@
 @extends('layouts.frontend.app')
+@php
+$title = $book->title->first()->title;
+$title = $title ? $title : $book->dTitle->first()->title;
+$description = $book->description->first()->description;
+$description = $description ? $description : $book->dDescription->first()->description;
+@endphp
 
-@section('title',$book->title->first()->title)
+@section('title',$title)
 
 @push('css')
     <link rel="stylesheet" href="{{asset('frontend/css/rating.css')}}">
+    <style>
+        .post-area .post-image {max-width: 260px}
+    </style>
 @endpush
 
 @section('content')
@@ -23,11 +32,11 @@
                             <div class="post-info">
 
 
-                            <h3 class="title"><a href="javascript:void(0)"><b>{{$book->title->first()->title}}</b></a></h3>
+                            <h3 class="title"><a href="javascript:void(0)"><b>{{$title}}</b></a></h3>
                             <div class="color-gray"><b>Posted: </b><span class="color-gray">{{$book->created_at->diffForHumans()}}</span></div>
-                            <div class="post-image"><img alt="{{$book->title->first()->title}}" width="80px" src="{{asset('storage/book/'.$book->image)}}"></div>
+                            <div class="post-image"><img alt="{{$title}}" width="80px" src="{{asset('storage/book/'.$book->image)}}"></div>
 
-                           <b>Description:</b>{!! html_entity_decode($book->description->first()->description) !!}
+                           <b>Description:</b>{!! html_entity_decode($description) !!}
                              <div id="rating-area">
                                  @php $rating = intval($book->rate()->avg('rate')) @endphp
                                        <select id="rating" name="rating" data-current-rating="{{$rating}}" autocomplete="off">
@@ -118,8 +127,12 @@
 
 
                                     <div class="blog-info">
+                                        @php
+                                        $title = $wook->title->first()->title;
+                                        $title = $title ? $title : $wook->dTitle->first()->title
+                                        @endphp
 
-                                        <span class="title"><b>{{$wook->title->first()->title}}</b></span>
+                                        <span class="title"><b>{{$title}}</b></span>
 
                                         <ul class="post-footer">
                                             <li><i class="ion-chatbubble"></i>{{$wook->comments->count()}}</li>

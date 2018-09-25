@@ -1,9 +1,18 @@
 @extends('layouts.frontend.app')
 
-@section('title',$article->title->first()->title)
+@php
+$title = $article->title->first()->title;
+$title = $title ? $title : $article->dTitle->first()->title;
+$description = $article->description->first()->description;
+$description = $description ? $description : $article->dDescription->first()->description;
+@endphp
+
+@section('title',$title)
 
 @push('css')
-
+    <style>
+        .post-area .post-image {max-width: 620px}
+    </style>
 @endpush
 
 @section('content')
@@ -33,9 +42,9 @@
 
                             </div><!-- post-info -->
 
-                            <h3 class="title"><a href="javascript:void(0)"><b>{{$article->title->first()->title}}</b></a></h3>
-                            <div class="post-image"><img src="{{asset('storage/post/'.$article->image)}}" alt="{{$article->title->first()->title}}"></div>
-                            {!!html_entity_decode($article->description->first()->description)!!}
+                            <h3 class="title"><a href="javascript:void(0)"><b>{{$title}}</b></a></h3>
+                            <div class="post-image"><img src="{{asset('storage/post/'.$article->image)}}" alt="{{$title}}"></div>
+                            {!!html_entity_decode($description)!!}
 
                            <!-- <ul class="tags">
                                 @//foreach($article->tags as $tag)
@@ -113,7 +122,12 @@
 
                                 <div class="blog-info">
 
-                                    <span class="title"><b>{{$rticle->title->first()->title}}</b></span>
+                                    @php
+                                    $title = $rticle->title->first()->title;
+                                    $title = $title ? $title : $rticle->dTitle->first()->title;
+                                    @endphp
+
+                                    <span class="title"><b>{{$title}}</b></span>
 
                                     <ul class="post-footer">
                                         <li><i class="ion-chatbubble"></i>{{$rticle->comments->count()}}</li>
