@@ -22,7 +22,7 @@
                         <div class="display-table center-text">
                             <div class="display-table-cell">
                                     @php
-                                     $title = $book->title->first()->title;
+                                     $title = $book->title->first()->title??0;
                                      $title = $title ? $title : $book->dTitle->first()->title;
                                     @endphp
                                     <h3><b>{{$title}}</b></h3>
@@ -58,7 +58,7 @@
 
                                     <div class="blog-info">
                                         @php
-                                        $title = $book->title->first()->title;
+                                        $title = $book->title->first()->title??0;
                                         $title = $title ? $title : $book->dTitle->first()->title;
                                         @endphp
 
@@ -94,7 +94,7 @@
    @foreach($articles as $article)
                             <li>
                                 @php
-                                $title = $article->title->first()->title;
+                                $title = $article->title->first()->title??0;
                                 $title = $title ? $title : $article->dTitle->first()->title;
                                 @endphp
                                 <a href="{{route('viewArticle',$article->id)}}">{{$title}}</a>

@@ -1,9 +1,9 @@
 @extends('layouts.frontend.app')
 
 @php
-$title = $article->title->first()->title;
+$title = $article->title->first()->title??0;
 $title = $title ? $title : $article->dTitle->first()->title;
-$description = $article->description->first()->description;
+$description = $article->description->first()->description??0;
 $description = $description ? $description : $article->dDescription->first()->description;
 @endphp
 
@@ -123,7 +123,7 @@ $description = $description ? $description : $article->dDescription->first()->de
                                 <div class="blog-info">
 
                                     @php
-                                    $title = $rticle->title->first()->title;
+                                    $title = $rticle->title->first()->title??0;
                                     $title = $title ? $title : $rticle->dTitle->first()->title;
                                     @endphp
 

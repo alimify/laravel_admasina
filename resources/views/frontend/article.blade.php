@@ -28,7 +28,7 @@
 
                                             <div class="blog-info">
                                                 @php
-                                                $title = $article->title->first()->title;
+                                                $title = $article->title->first()->title??0;
                                                 $title = $title ? $title : $article->dTitle->first()->title;
                                                 @endphp
 

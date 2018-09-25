@@ -27,7 +27,7 @@
 
                                             <div class="blog-info">
                                                 @php
-                                                $title = $book->title->first()->title;
+                                                $title = $book->title->first()->title??0;
                                                 $title = $title ? $title : $book->dTitle->first()->title;
                                                 @endphp
                                                 <span class="title"><b>{{$title}}</b></span>
