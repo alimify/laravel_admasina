@@ -36,7 +36,7 @@
         <tr>
             <th><img src="{{asset('storage/post/'.$post->image)}}" alt="" width="80px"></th>
             <td>
-                    {{$post->title->first()->title}}
+                    {{$post->dTitle->first()->title}}
             </td>
             <!--<td>{{$post->user->name}}</td>-->
             <td>

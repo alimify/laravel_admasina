@@ -27,7 +27,7 @@
                 <div class="col-sm-7 col-md-9">
                     <div class="form-group col-sm-8 col-md-12">
                         <label for="title" class="font-weight-bold">Title :</label>
-                        <input type="text" class="form-control" name="title" value="@foreach($post->title as $title) {{$title->title}} @endforeach">
+                        <input type="text" class="form-control" name="title" value="{{$post->dTitle->first()->title}}">
                     </div>
 
 
@@ -40,7 +40,7 @@
 
                     <div class="form-group col-sm-8 col-md-12">
                         <label for="title" class="font-weight-bold">Description :</label>
-                        <textarea class="form-control" rows="5" name="description" id="summernote">@foreach($post->description as $description) {{$description->description}} @endforeach</textarea>
+                        <textarea class="form-control" rows="5" name="description" id="summernote">{{$post->dDescription->first()->description}}</textarea>
                     </div>
 
 

@@ -18,9 +18,7 @@
 
     <div class="bg-white container-fluid">
         <h2>
-            @foreach($post->title as $title)
-                {{$title->title}}
-            @endforeach
+            {{$post->dTitle->first()->title}}
         </h2>
         <div class="text-muted">
             <b>Status : </b> {{$post->is_active ? 'Published' : 'Draft'}} ,
@@ -33,9 +31,7 @@
                 <img class="img-thumbnail" src="{{asset('storage/post/'.$post->image)}}" alt="">
             </div>
             <div class="post-description row mb-3">
-                <b>Description : </b> @foreach($post->description as $description)
-                    {!!html_entity_decode($description->description)!!}
-                @endforeach
+                <b>Description : </b> {!!html_entity_decode($post->dDescription->first()->description)!!}
             </div>
             <div class="post-rating row mb-3">
                 <b>Views :</b> {{$post->views}}
