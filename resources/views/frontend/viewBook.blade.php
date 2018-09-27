@@ -4,6 +4,8 @@ $title = $book->title->first()->title??0;
 $title = $title ? $title : $book->dTitle->first()->title;
 $description = $book->description->first()->description??0;
 $description = $description ? $description : $book->dDescription->first()->description;
+$downloadlink = $book->datalink->first()->link??0;
+$downloadlink = $downloadlink ? $downloadlink : $book->dDatalink->first()->link;
 @endphp
 
 @section('title',$title)
@@ -46,6 +48,8 @@ $description = $description ? $description : $book->dDescription->first()->descr
                            <div class="paras"><b>Author: </b> @foreach($book->authors as $author) {{$author->title}}, @endforeach </div>
 
                            <div class="parsa"><b>Translator: </b> @foreach($book->translators as $translator) {{$translator->title}}, @endforeach </div>
+
+                           <div class="parsa"><b>Download Link : </b>   <a href="{{asset('storage/'.$downloadlink)}}" class="color-gray font-weight-bold">Download Now Ebook File</a>  </div>
                             </div>
                         </div><!-- blog-post-inner -->
 

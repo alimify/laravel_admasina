@@ -92,12 +92,16 @@ header{ font-weight: 400; }
 3. MENU
 --------------------------------- */
 
-header{ overflow: hidden; background: #fff; box-shadow: 0px 2px 10px rgba(0,0,0, .3); }
+header{ overflow: hidden; background: #fff; box-shadow: 0px 2px 10px rgba(0,0,0, .3);}
 
-header .logo{float: left;height: 90px; margin: 4px 4px; margin-left: 10px;}
+header .logo{margin: 4px 5px 4px 10px;}
 
-header .logo img{ height: 70px; width: 110px; }
+header .logo img{ height: 55px; width: 80px;margin-right: 5px; }
 header .logo:hover{color: black}
+
+header .logo-n-slogan{
+    float: left;position: relative; width: 250px;}
+header .logo-slogan {font-weight: 500;position:absolute;bottom: 4px;}
 header ul{border-bottom: 1px solid #eee}
 
 header .main-menu{ display: inline-block; float: left; }
@@ -139,7 +143,12 @@ header .src-area .src-btn{ position: absolute; top: 0; bottom: 0; left: 0; width
 4. SLIDER
 --------------------------------- */
 
-.owl-carousel{ width: 100%; }
+.owl-carousel{
+    border: 5px solid #eeeeee;
+    margin-top: 20px;
+    margin-bottom: 10px;
+    margin: auto;
+}
  
 .owl-carousel{ overflow: hidden; position: relative; }
 
@@ -153,12 +162,12 @@ header .src-area .src-btn{ position: absolute; top: 0; bottom: 0; left: 0; width
 
 /* SLIDER CONTROLER */
 .owl-carousel .item {
-    height: 280px;
-    width: 330px;
+    height: 250px;
+    border: 2px solid #eee;
 }
 
 .owl-carousel .slider-image img {
-    width: 330px;
+
 }
  
 

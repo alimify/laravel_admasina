@@ -34,10 +34,9 @@
 
 
 
-
 <section class="blog-area section">
     <div class="container">
-
+        <h4 class="title text-left"><b>Latest Books</b></h4>
         <div class="row">
 
             <div class="col-lg-8 col-md-12">
@@ -152,11 +151,12 @@
 <script>
     $('.owl-carousel').owlCarousel({
         loop:true,
-        margin:10,
+        margin:15,
         responsiveClass:true,
         autoplay:true,
         autoplayTimeout:3000,
         autoplayHoverPause:true,
+        //center:true,
         responsive:{
             0:{
                 items:1,

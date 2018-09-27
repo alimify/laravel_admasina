@@ -27,9 +27,10 @@
 
 <header>
     <div class="container-fluid position-relative no-side-padding">
-
-        <div class="d-block"><a href="{{route('index')}}" class="logo"><img src="{{asset(Config::get('websettings.siteLogo'))}}" alt="Logo"><br/>A Lovely Slogan Here</a></div>
-
+        <div class="logo-n-slogan">
+        <a href="{{route('index')}}" class="logo"><img src="{{asset(Config::get('websettings.siteLogo'))}}" alt="Logo"></a>
+        <span class="logo-slogan">Bridging the gap</span>
+        </div>
         <div class="menu-nav-icon" data-nav-menu="#main-menu"><i class="ion-navicon"></i></div>
 
         <ul class="main-menu visible-on-click" id="main-menu">

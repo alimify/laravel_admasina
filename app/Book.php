@@ -60,6 +60,18 @@ class Book extends Model
             ->where('book_description.language_id',Config::get('websettings.defaultLanguage'));
     }
 
+    public function datalink(){
+        $langauge = Config::get('language');
+        return $this->belongsToMany('App\DataLink')
+            ->where('book_data_link.language_id',$langauge);
+    }
+
+    public function dDatalink(){
+        $langauge = Config::get('language');
+        return $this->belongsToMany('App\DataLink')
+            ->where('book_data_link.language_id',Config::get('websettings.defaultLanguage'));
+    }
+
     public function datalinks(){
         return $this->belongsToMany('App\DataLink')->withPivot('language_id');
     }
