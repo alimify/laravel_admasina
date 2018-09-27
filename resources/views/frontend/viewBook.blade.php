@@ -38,21 +38,9 @@ $description = $description ? $description : $book->dDescription->first()->descr
 
                            <b>Description:</b>{!! html_entity_decode($description) !!}
                              <div id="rating-area">
-                                 @php $rating = intval($book->rate()->avg('rate')) @endphp
-                                       <select id="rating" name="rating" data-current-rating="{{$rating}}" autocomplete="off">
-                                           <option value=""></option>
-                                           <option value="1">1</option>
-                                           <option value="2">2</option>
-                                           <option value="3">3</option>
-                                           <option value="4">4</option>
-                                           <option value="5">5</option>
-                                           <option value="6">6</option>
-                                           <option value="7">7</option>
-                                           <option value="8">8</option>
-                                           <option value="9">9</option>
-                                           <option value="10">10</option>
-                                       </select>
-                                 <b>Rating: </b> <span id="rating-text">{{$rating}}/10</span>
+                                 @php $rating = round($book->rate()->avg('rate'),1,PHP_ROUND_HALF_UP) @endphp
+                                 <div id="rateYo"></div>
+                                 <b>Rating: </b> <span id="rating-text">{{$rating}}/5</span>
                                </div>
 
                            <div class="paras"><b>Author: </b> @foreach($book->authors as $author) {{$author->title}}, @endforeach </div>
@@ -224,16 +212,19 @@ $description = $description ? $description : $book->dDescription->first()->descr
                 }
             })
 
-            $("#rating").barrating({
-                theme: 'css-stars',
-                showSelectedRating: false,
-                initialRating: currentRating,
-                onSelect: function(value, text) {
-                 $.ajax({url: "/rating/book/{{$book->id}}/"+value, success: function(result){
-                     $("#rating-text").text(result+'/10')
-                   }});
+            $("#rateYo").rateYo({
+                rating: `{{$rating}}`,
+                maxValue: 5,
+                numStars: 5,
+                fullStar: true,
+                onSet: function (value, rateYoInstance) {
+                    console.log(value)
+                    $.ajax({url: "/rating/book/{{$book->id}}/"+value, success: function(result){
+                            $("#rating-text").text(result+'/5')
+                        }});
                 }
             })
+
         })
     </script>
 @endpush

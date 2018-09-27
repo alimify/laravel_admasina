@@ -241,7 +241,7 @@ class HomeController extends Controller
 
         $current_rating = Rating::where('book_id',$id)->avg('rate');
 
-        return intval($current_rating);
+        return round($current_rating,1,PHP_ROUND_HALF_UP);
     }
 
 

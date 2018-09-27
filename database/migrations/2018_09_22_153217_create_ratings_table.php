@@ -17,7 +17,7 @@ class CreateRatingsTable extends Migration
             $table->increments('id');
             $table->integer('book_id');
             $table->integer('user_id');
-            $table->integer('rate');
+            $table->float('rate');
             $table->timestamps();
         });
     }

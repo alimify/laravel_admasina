@@ -3,43 +3,37 @@
 @section('title',Config::get('websettings.homePageTitle'))
 
 @push('css')
-
+    <link href="{{asset('frontend/css/owl.carousel.min.css')}}" rel="stylesheet">
+    <link href="{{asset('frontend/css/owl.theme.default.min.css')}}" rel="stylesheet">
 @endpush
 
 @section('content')
-<div class="main-slider">
-    <div class="swiper-container position-static" data-slide-effect="slide" data-autoheight="false"
-         data-swiper-speed="500" data-swiper-autoplay="10000" data-swiper-margin="0" data-swiper-slides-per-view="4"
-         data-swiper-breakpoints="true" data-swiper-loop="true" >
-        <div class="swiper-wrapper">
-
-@foreach($books as $book)
-            <div class="swiper-slide">
+    <div class="owl-carousel owl-theme">
+        @foreach($books as $book)
+            <div class="item">
                 <a class="slider-category" href="{{route('viewBook',$book->id)}}">
-                    <div class="blog-image"><img src="{{asset('storage/book/'.$book->image)}}" alt="book image"></div>
-
+                    <div class="slider-image">
+                    <img src="{{asset('storage/book/'.$book->image)}}" alt="book image">
+                    </div>
                     <div class="category">
                         <div class="display-table center-text">
                             <div class="display-table-cell">
-                                    @php
-                                     $title = $book->title->first()->title??0;
-                                     $title = $title ? $title : $book->dTitle->first()->title;
-                                    @endphp
-                                    <h3><b>{{$title}}</b></h3>
+                                @php
+                                    $title = $book->title->first()->title??0;
+                                    $title = $title ? $title : $book->dTitle->first()->title;
+                                @endphp
+                                <h3><b>{{$title}}</b></h3>
                             </div>
                         </div>
                     </div>
 
                 </a>
             </div><!-- swiper-slide -->
-@endforeach
+        @endforeach
+    </div>
 
 
-        </div><!-- swiper-wrapper -->
 
-    </div><!-- swiper-container -->
-
-</div>
 
 <section class="blog-area section">
     <div class="container">
@@ -154,6 +148,34 @@
 
 
 @push('script')
-
+    <script src="{{asset('frontend/js/owl.carousel.min.js')}}"></script>
+<script>
+    $('.owl-carousel').owlCarousel({
+        loop:true,
+        margin:10,
+        responsiveClass:true,
+        autoplay:true,
+        autoplayTimeout:3000,
+        autoplayHoverPause:true,
+        responsive:{
+            0:{
+                items:1,
+                nav:false
+            },
+            550:{
+             items:2,
+             nav:false
+            },
+            750:{
+                items:3,
+                nav:false
+            },
+            950:{
+                items:4,
+                nav:false
+            }
+        }
+    })
+</script>
 @endpush
 

@@ -13,7 +13,6 @@
 @media only screen and (max-width: 992px) {
     /* SEARCH AREA */
     header .src-area{ width: 100%; }
-
 }
 
 @media only screen and (min-width: 992px) {
@@ -83,8 +82,13 @@
 	
 	header .main-menu li > a,
 	header .main-menu ul.drop-down li > a{ display: block; line-height: 1; height: auto; padding: 15px; background: none; }
-	
-	
+
+    header .logo{position: relative;
+        left: 30%;height: 90px}
+    header .logo img{
+        height: 70px;
+        width: 80px;
+    }
 	
 	/* SEARCH AREA */
 

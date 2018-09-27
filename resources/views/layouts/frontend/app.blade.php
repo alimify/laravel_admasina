@@ -16,8 +16,6 @@
 
     <link href="{{asset('frontend/css/bootstrap.css')}}" rel="stylesheet">
 
-    <link href="{{asset('frontend/css/swiper.css')}}" rel="stylesheet">
-
     <link href="{{asset('frontend/css/ionicons.css')}}" rel="stylesheet">
 
     <link href="{{asset('frontend/css/styles.css')}}" rel="stylesheet">
@@ -30,13 +28,14 @@
 <header>
     <div class="container-fluid position-relative no-side-padding">
 
-        <a href="{{route('index')}}" class="logo"><img src="{{asset(Config::get('websettings.siteLogo'))}}" alt="Logo Image" width="80px"></a>
+        <div class="d-block"><a href="{{route('index')}}" class="logo"><img src="{{asset(Config::get('websettings.siteLogo'))}}" alt="Logo"><br/>A Lovely Slogan Here</a></div>
 
         <div class="menu-nav-icon" data-nav-menu="#main-menu"><i class="ion-navicon"></i></div>
 
         <ul class="main-menu visible-on-click" id="main-menu">
             <li><a href="{{route('book')}}">BOOK</a></li>
             <li><a href="{{route('article')}}">ARTICLE</a></li>
+            <li><a href="{{route('aboutus')}}">ABOUT US</a></li>
             <li><a href="{{route('contactus')}}">CONTACT US</a></li>
             <li><a href="{{route('language')}}">LANGUAGE</a></li>
         </ul><!-- main-menu -->
@@ -92,9 +91,6 @@
 <script src="{{asset('frontend/js/tether.min.js')}}"></script>
 
 <script src="{{asset('frontend/js/bootstrap.js')}}"></script>
-
-<script src="{{asset('frontend/js/swiper.js')}}"></script>
-
 <script src="{{asset('frontend/js/scripts.js')}}"></script>
 @stack('script')
 </body>
