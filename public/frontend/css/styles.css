@@ -145,29 +145,28 @@ header .src-area .src-btn{ position: absolute; top: 0; bottom: 0; left: 0; width
 
 .owl-carousel{
     border: 5px solid #eeeeee;
-    margin-top: 20px;
-    margin-bottom: 10px;
     margin: auto;
+    margin-top: 20px;
 }
  
 .owl-carousel{ overflow: hidden; position: relative; }
 
 .owl-carousel .swiper-container{ overflow: visible; }
 
-.owl-carousel .category{ position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: 1; color: #fff; }
+.owl-carousel .category{position: absolute; bottom: -5px;right:0;left:0;z-index: 9999;color:black; }
  
-.owl-carousel .category:after{ content:''; position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: -1;
+.owl-carousels .category:after{ content:''; position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: -1;
 	background: rgba(0,0,0,.4); } 
 
 
 /* SLIDER CONTROLER */
 .owl-carousel .item {
-    height: 250px;
+    height: 280px;
     border: 2px solid #eee;
 }
 
 .owl-carousel .slider-image img {
-
+height: 250px;
 }
  
 
