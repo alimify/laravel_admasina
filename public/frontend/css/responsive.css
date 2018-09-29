@@ -129,14 +129,14 @@
 	--------------------------------- */
 
 	body{ font-size: 14px;  }
-	
+	.logo-slogan{display: block;text-align: center;width:150px;margin:auto;margin-left: 30%;}
 	
 }
 
 /* Screens Resolution : 359px
 -------------------------------------------------------------------------- */
 @media only screen and (max-width: 359px) {
-	
+
 	
 }
 
