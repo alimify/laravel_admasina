@@ -83,12 +83,12 @@
 	header .main-menu ul.drop-down li > a{ display: block; line-height: 1; height: auto; padding: 15px; background: none; }
 
     header .logo{
-        left: 40%;position: relative;height: 90px}
-    header .logo img{
-        height: 70px;
-        width: 80px;
+        display:block;
     }
-	
+    header .logo img{
+        height: 80px;
+        width: 90px;
+    }
 	/* SEARCH AREA */
 
 	/*header .src-area{ width: 100%; }*/
@@ -129,7 +129,8 @@
 	--------------------------------- */
 
 	body{ font-size: 14px;  }
-	.logo-slogan{display: block;text-align: center;width:150px;margin:auto;margin-left: 30%;}
+
+	.logo-slogan{display: block;text-align: center;}
 	
 }
 
@@ -259,4 +260,19 @@
 
 @media only screen and (min-width: 950px) {
     .owl-carousel{max-width: 1050px}
+}
+@media only screen and (max-width: 850px) {
+    .logo-n-slogan{
+        position: relative;
+        float: left;
+        max-width: 300px;
+        margin: auto;
+        left: 25%;
+    }
+
+}
+@media only screen and (max-width: 479px) {
+ .logo-n-slogan{
+     float: left;
+ }
 }

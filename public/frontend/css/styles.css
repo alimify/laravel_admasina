@@ -94,16 +94,23 @@ header{ font-weight: 400; }
 
 header{ overflow: hidden; background: #fff; box-shadow: 0px 2px 10px rgba(0,0,0, .3);}
 
-header .logo{margin: 4px 5px 4px 10px;}
+header .logo{
+    margin: 0px 0px 0px 10px;}
 
-header .logo img{ height: 55px; width: 80px;margin-right: 5px; }
+header .logo img{ height: 100px; width: 120px;margin-right: 5px; }
 header .logo:hover{color: black}
 
 header .logo-n-slogan{
-    float: left;position: relative; width: 250px;}
-header .logo-slogan {font-weight: 500;position:absolute;bottom: 4px;}
-header ul{border-bottom: 1px solid #eee}
+    margin:10px 10px 5px 20px;
+}
 
+header .logo-slogan {
+    font-weight: 500;
+    bottom: 4px;
+    display: block;
+}
+header ul{border-bottom: 1px solid #eee;}
+header .header-n-search{border-bottom: 1px solid #eee;border-top: 1px solid #eeeeee;}
 header .main-menu{ display: inline-block; float: left; }
 
 header .main-menu > li{ float: left; }
@@ -121,7 +128,7 @@ header .visible.main-menu{ display: block; }
 
 /* SEARCH AREA */
 
-header .src-area{ position: relative; height: 60px;float: right; display: inline-block; background: #F5F7F6; }
+header .src-area{ position: relative; height: 60px;float: right; display: inline-block; background: #F5F7F6;border-top: 1px solid #eeeeee }
 
 header .src-area .src-input{ position: absolute; top: 0; bottom: 0; left: 0; right: 0;
 	padding: 0 20px 0 70px; background: transparent; border: 0; outline: 0; }
@@ -164,7 +171,9 @@ header .src-area .src-btn{ position: absolute; top: 0; bottom: 0; left: 0; width
     height: 280px;
     border: 2px solid #eee;
 }
-
+.owl-carousel .slider-category{
+    border: 1px solid #eeeeee;
+}
 .owl-carousel .slider-image img {
 height: 250px;
 }

@@ -27,13 +27,23 @@
 
 <header>
     <div class="container-fluid position-relative no-side-padding">
+        <ul class="text-center">
+            <li class="color-gray font-weight-bold">Welcome ! </li>
+            @if(Auth::check())
+                <li><a href="{{route('user.profile.show')}}"><b>DASHBOARD</b></a></li>
+                @else
+            <li><a href="{{route('login')}}"><b>LOGIN</b></a></li>
+                @endif
+        </ul>
         <div class="logo-n-slogan">
-        <a href="{{route('index')}}" class="logo"><img src="{{asset(Config::get('websettings.siteLogo'))}}" alt="Logo"></a>
-        <span class="logo-slogan">Bridging the gap</span>
+            <a href="{{route('index')}}" class="logo"><img src="{{asset(Config::get('websettings.siteLogo'))}}" alt="Logo"></a>
+            <span class="logo-slogan">BRIDGING THE GAP</span>
         </div>
-        <div class="menu-nav-icon" data-nav-menu="#main-menu"><i class="ion-navicon"></i></div>
 
+        <div class="menu-nav-icon" data-nav-menu="#main-menu"><i class="ion-navicon"></i></div>
+<div class="header-n-search">
         <ul class="main-menu visible-on-click" id="main-menu">
+            <li><a href="{{route('index')}}">HOME</a> </li>
             <li><a href="{{route('book')}}">BOOK</a></li>
             <li><a href="{{route('article')}}">ARTICLE</a></li>
             <li><a href="{{route('aboutus')}}">ABOUT US</a></li>
@@ -47,7 +57,7 @@
                 <input class="src-input" type="text" placeholder="Type of search" name="q">
             </form>
         </div>
-
+</div>
     </div><!-- conatiner -->
 </header>
 

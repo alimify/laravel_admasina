@@ -144,7 +144,7 @@ $downloadlink = $downloadlink ? $downloadlink : $book->dDatalink->first()->link?
 
     <section class="comment-section">
         <div class="container">
-            <h4><b>POST COMMENT</b></h4>
+            <h4><b>COMMENT</b></h4>
             <div class="row">
 
                 <div class="col-lg-8 col-md-12">
