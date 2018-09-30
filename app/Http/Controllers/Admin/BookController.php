@@ -102,7 +102,7 @@ class BookController extends Controller
             ];
 
             $ebookFile = $request->file('ebook'.$mainData->langId);
-            if(isset($ebookFile) && $ebookFile) {
+            if(is_file($ebookFile)) {
                 $ebookLinkdata[] = [
                     'language_id' => $mainData->langId,
                     'data_link_id' => $this->addEbookFile($ebookFile)
@@ -118,7 +118,7 @@ class BookController extends Controller
             $imageName = 'default.png';
 
 
-            if(isset($image) && $image){
+            if(is_file($image)){
                 $imageName = uniqid().str_slug(Carbon::now()).'.'.$image->getClientOriginalExtension();
 
 
@@ -179,7 +179,7 @@ class BookController extends Controller
 
    private function addEbookFile($file){
 
-        if(isset($file) && $file){
+        if(is_file($file)){
             $directory = 'ebook/'.Carbon::now()->format('F-Y');
 
             if (!Storage::disk('public')->exists($directory)) {
@@ -338,7 +338,7 @@ class BookController extends Controller
             ];
 
             $ebookFile = $request->file('ebook'.$mainData->langId);
-            $yesNewFile = isset($ebookFile) && $ebookFile;
+            $yesNewFile = is_file($ebookFile);
             $ebookFileId = $this->checkExistingFile($yesNewFile,$ebookFile,$book->id,$mainData->langId);
             if($ebookFileId) {
                 $ebookLinkdata[] = [
@@ -352,7 +352,7 @@ class BookController extends Controller
 
 
             $image = $request->file('image');
-            if(isset($image) && $image){
+            if(is_file($image)){
                 $imageName = uniqid().str_slug(Carbon::now()).'.'.$image->getClientOriginalExtension();
 
                 if (!Storage::disk('public')->exists('book')) {
