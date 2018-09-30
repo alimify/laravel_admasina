@@ -20,7 +20,7 @@
                             <div class="display-table-cell">
                                 @php
                                     $title = $book->title->first()->title??0;
-                                    $title = $title ? $title : $book->dTitle->first()->title;
+                                    $title = $title ? $title : $book->dTitle->first()->title??'';
                                 @endphp
                                 <h3><b>{{$title}}</b></h3>
                             </div>
@@ -52,7 +52,7 @@
                                     <div class="blog-info">
                                         @php
                                         $title = $book->title->first()->title??0;
-                                        $title = $title ? $title : $book->dTitle->first()->title;
+                                        $title = $title ? $title : $book->dTitle->first()->title??'';
                                         @endphp
 
                                         <span class="title"><b>{{$title}}</b></span>
@@ -88,7 +88,7 @@
                             <li>
                                 @php
                                 $title = $article->title->first()->title??0;
-                                $title = $title ? $title : $article->dTitle->first()->title;
+                                $title = $title ? $title : $article->dTitle->first()->title??'';
                                 @endphp
                                 <a href="{{route('viewArticle',$article->id)}}">{{$title}}</a>
                                 <span class="color-gray d-block">Posted : {{$article->created_at->diffForHumans()}}</span>

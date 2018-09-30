@@ -29,7 +29,7 @@
                                             <div class="blog-info">
                                                 @php
                                                 $title = $article->title->first()->title??0;
-                                                $title = $title ? $title : $article->dTitle->first()->title;
+                                                $title = $title ? $title : $article->dTitle->first()->title??'';
                                                 @endphp
 
                                                 <span class="title"><b>{{$title}}</b></span>

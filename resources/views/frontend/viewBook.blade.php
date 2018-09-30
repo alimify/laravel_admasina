@@ -1,9 +1,9 @@
 @extends('layouts.frontend.app')
 @php
 $title = $book->title->first()->title??0;
-$title = $title ? $title : $book->dTitle->first()->title;
+$title = $title ? $title : $book->dTitle->first()->title??'';
 $description = $book->description->first()->description??0;
-$description = $description ? $description : $book->dDescription->first()->description;
+$description = $description ? $description : $book->dDescription->first()->description??'';
 $downloadlink = $book->datalink->first()->link??0;
 $downloadlink = $downloadlink ? $downloadlink : $book->dDatalink->first()->link??'';
 @endphp

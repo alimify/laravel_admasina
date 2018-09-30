@@ -2,9 +2,9 @@
 
 @php
 $title = $article->title->first()->title??0;
-$title = $title ? $title : $article->dTitle->first()->title;
+$title = $title ? $title : $article->dTitle->first()->title??'';
 $description = $article->description->first()->description??0;
-$description = $description ? $description : $article->dDescription->first()->description;
+$description = $description ? $description : $article->dDescription->first()->description??'';
 @endphp
 
 @section('title',$title)
@@ -124,7 +124,7 @@ $description = $description ? $description : $article->dDescription->first()->de
 
                                     @php
                                     $title = $rticle->title->first()->title??0;
-                                    $title = $title ? $title : $rticle->dTitle->first()->title;
+                                    $title = $title ? $title : $rticle->dTitle->first()->title??'';
                                     @endphp
 
                                     <span class="title"><b>{{$title}}</b></span>
