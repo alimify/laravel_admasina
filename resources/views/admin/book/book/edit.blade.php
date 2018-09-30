@@ -29,7 +29,7 @@
                     <div class="form-group col-sm-8 col-md-12">
                         <label for="title" class="font-weight-bold">Title :</label>
                         <input type="text" class="form-control" name="title"
-                        value="{{$book->dTitle->first()->title}}">
+                        value="{{$book->dTitle->first()->title??''}}">
                     </div>
 
 
@@ -48,7 +48,7 @@
 
                     <div class="form-group col-sm-8 col-md-12">
                         <label for="title" class="font-weight-bold">Description :</label>
-                        <textarea class="form-control" rows="5" name="description" id="summernote">{{$book->dDescription->first()->description}}</textarea>
+                        <textarea class="form-control" rows="5" name="description" id="summernote">{{$book->dDescription->first()->description??''}}</textarea>
                     </div>
 
 

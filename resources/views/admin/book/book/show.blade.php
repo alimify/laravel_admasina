@@ -18,7 +18,7 @@
 
     <div class="bg-white container-fluid">
         <h2>
-       {{$book->dTitle->first()->title}}
+       {{$book->dTitle->first()->title??''}}
         </h2>
         <div class="text-muted">
             <b>Status : </b> {{$book->is_active ? 'Published' : 'Draft'}} ,
@@ -31,7 +31,7 @@
                 <img class="img-thumbnail" src="{{asset('storage/book/'.$book->image)}}" alt="">
             </div>
             <div class="book-description row mb-3">
-                <b>Description : </b>  {!!html_entity_decode($book->dDescription->first()->description)!!}
+                <b>Description : </b>  {!!html_entity_decode($book->dDescription->first()->description??'')!!}
 
             </div>
             <div class="book-views row mb-3">

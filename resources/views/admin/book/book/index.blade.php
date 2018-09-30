@@ -32,7 +32,7 @@
                 <img src="{{asset('storage/book/'.$book->image)}}" width="80px" alt="">
             </th>
             <td>
-                {{$book->dTitle->first()->title}}
+                {{$book->dTitle->first()->title??''}}
             </td>
             <td>
                 @foreach($book->authors as $author)
