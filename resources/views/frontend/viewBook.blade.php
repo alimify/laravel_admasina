@@ -121,7 +121,7 @@ $downloadlink = $downloadlink ? $downloadlink : $book->dDatalink->first()->link?
                                     <div class="blog-info">
                                         @php
                                         $title = $wook->title->first()->title??0;
-                                        $title = $title ? $title : $wook->dTitle->first()->title
+                                        $title = $title ? $title : $wook->dTitle->first()->title??''
                                         @endphp
 
                                         <span class="title"><b>{{$title}}</b></span>
