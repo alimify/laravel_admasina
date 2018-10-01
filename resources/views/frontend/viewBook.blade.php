@@ -49,7 +49,7 @@ $downloadlink = $downloadlink ? $downloadlink : $book->dDatalink->first()->link?
 
                            <div class="parsa"><b>Translator: </b> @foreach($book->translators as $translator) {{$translator->title}}, @endforeach </div>
 
-                           <div class="parsa"><b>Download Link : </b>   <a href="{{asset('storage/'.$downloadlink)}}" class="color-gray font-weight-bold">Download Now Ebook File</a>  </div>
+                           <div class="parsa"><b>Download Link : </b>   <a href="{{asset($downloadlink)}}" class="color-gray font-weight-bold">Download Now Ebook File</a>  </div>
                             </div>
                         </div><!-- blog-post-inner -->
 
@@ -124,7 +124,7 @@ $downloadlink = $downloadlink ? $downloadlink : $book->dDatalink->first()->link?
                                         $title = $title ? $title : $wook->dTitle->first()->title??''
                                         @endphp
 
-                                        <span class="title"><b>{{$title}}</b></span>
+                                        <span class="title"><b>{{str_limit($title,20)}}</b></span>
 
                                         <ul class="post-footer">
                                             <li><i class="ion-chatbubble"></i>{{$wook->comments->count()}}</li>

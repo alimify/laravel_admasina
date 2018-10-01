@@ -127,7 +127,7 @@ $description = $description ? $description : $article->dDescription->first()->de
                                     $title = $title ? $title : $rticle->dTitle->first()->title??'';
                                     @endphp
 
-                                    <span class="title"><b>{{$title}}</b></span>
+                                    <span class="title"><b>{{str_limit($title,50)}}</b></span>
 
                                     <ul class="post-footer">
                                         <li><i class="ion-chatbubble"></i>{{$rticle->comments->count()}}</li>

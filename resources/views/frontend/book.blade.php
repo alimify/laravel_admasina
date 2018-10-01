@@ -30,7 +30,7 @@
                                                 $title = $book->title->first()->title??0;
                                                 $title = $title ? $title : $book->dTitle->first()->title??'';
                                                 @endphp
-                                                <span class="title"><b>{{$title}}</b></span>
+                                                <span class="title"><b>{{str_limit($title,20)}}</b></span>
 
                                                 <ul class="post-footer">
                                                     <li><i class="ion-chatbubble"></i>{{$book->comments->count()}}</li>

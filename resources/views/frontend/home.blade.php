@@ -22,7 +22,7 @@
                                     $title = $book->title->first()->title??0;
                                     $title = $title ? $title : $book->dTitle->first()->title??'';
                                 @endphp
-                                <h3><b>{{$title}}</b></h3>
+                                <h3><b>{{str_limit($title,20)}}</b></h3>
                             </div>
                         </div>
                     </div>
@@ -55,7 +55,7 @@
                                         $title = $title ? $title : $book->dTitle->first()->title??'';
                                         @endphp
 
-                                        <span class="title"><b>{{$title}}</b></span>
+                                        <span class="title"><b>{{str_limit($title,20)}}</b></span>
 
                                         <ul class="post-footer">
                                             <li><i class="ion-chatbubble"></i>{{$book->comments->count()}}</li>
@@ -90,7 +90,7 @@
                                 $title = $article->title->first()->title??0;
                                 $title = $title ? $title : $article->dTitle->first()->title??'';
                                 @endphp
-                                <a href="{{route('viewArticle',$article->id)}}">{{$title}}</a>
+                                <a href="{{route('viewArticle',$article->id)}}">{{str_limit($title,50)}}</a>
                                 <span class="color-gray d-block">Posted : {{$article->created_at->diffForHumans()}}</span>
                             </li>
     @endforeach
