@@ -3,9 +3,14 @@
 @section('title','Book/Edit')
 
 @push('css')
-
+    <link href="{{asset('assets/admin/css/app.css')}}" rel="stylesheet">
     <link href="{{asset('assets/admin/summernote/summernote-bs4.css')}}" rel="stylesheet">
     <link href="{{asset('assets/admin/css/multiselect.css')}}" rel="stylesheet">
+    <style>
+        .media-gallary-postion .modal{
+            margin-left: 180px;}
+    </style>
+
 @endpush
 
 
@@ -40,12 +45,22 @@
                     </div>
 
 
-                    <div class="form-group col-sm-8 col-md-12">
-                        <label for="ebook" class="font-weight-bold">Ebook File :</label>
-                        <label for="selected-file" id="ebook_selected_file" class="font-weight-normal d-block">Selected File : </label>
-                        <input type="file" class="form-control-file" name="ebook">
-                    </div>
+                    <div id="app" class="media-gallary-postion">
+                        <media-modal v-if="showMediaManager" @media-modal-close="showMediaManager = false">
+                            <media-manager
+                                :is-modal="true"
+                                :selected-event-name="selectedEventName"
+                                @media-modal-close="showMediaManager = false"
+                            >
+                            </media-manager>
+                        </media-modal>
+                        <div class="form-group col-sm-8 col-md-12">
+                            <label for="ebook" class="font-weight-bold">Ebook File :</label>
+                            <label for="selected-file" id="ebook_selected_file" class="font-weight-normal d-block">Selected File : </label>
+                            <input type="file" name="ebook" @click="preventDefaults">
+                        </div>
 
+                    </div>
                     <div class="form-group col-sm-8 col-md-12">
                         <label for="title" class="font-weight-bold">Description :</label>
                         <textarea class="form-control" rows="5" name="description" id="summernote">{{$book->dDescription->first()->description??''}}</textarea>
@@ -158,7 +173,7 @@
                 langEbook = <?php echo json_encode($langEbook); ?>,
                 langIdList = {{json_encode($langIdList)}},
                 langAbleEbook = <?php echo json_encode($langAbleEbook); ?>;
-            returnCurrentLangData();
+                 returnCurrentLangData();
 
 
             $("#language").change(function () {
@@ -171,8 +186,8 @@
 
 
             $("[name='ebook']").change(function () {
-                langEbook[currentLangId].file = [...this.files][0]
-                $("#ebook_selected_file").text(`Selected File : ${langEbook[currentLangId].file.name}`)
+                //langEbook[currentLangId].file = [...this.files][0]
+                //$("#ebook_selected_file").text(`Selected File : ${langEbook[currentLangId].file.name}`)
             })
 
 
@@ -251,21 +266,62 @@
                 prevLangId = currentLangId
                 langData[prevLangId].title = $("[name='title']").val().replace(/\s+/g,' ').trim()
                 langData[prevLangId].description = $('#summernote').summernote('code')
-                langEbook[prevLangId].file = $("[name='ebook']").prop('files')[0] ? $("[name='ebook']").prop('files')[0] : langEbook[prevLangId].file;
+                //langEbook[prevLangId].file = $("[name='ebook']").prop('files')[0] ? $("[name='ebook']").prop('files')[0] : langEbook[prevLangId].file;
 
                 currentLangId = $("#language").val()
                 currentLangData = langData[currentLangId]
                 $("[name='title']").val(currentLangData.title)
                 $('#summernote').summernote('code',currentLangData.description)
-                $("[name='ebook']").val('')
-                const currentebookfile = `${langEbook[currentLangId].file.name == undefined && langAbleEbook[currentLangId].link.length > 2
-                                           ? `<a href='/storage/${langAbleEbook[currentLangId].link}'>${langEbook[currentLangId].langTitle} Ebook File</a>`: langEbook[currentLangId].file.name }`;
+                //$("[name='ebook']").val('')
+                const currentebookfile = `${(!langEbook[currentLangId].file) && langAbleEbook[currentLangId].link.length > 2
+                                           ? `<a href='${langAbleEbook[currentLangId].link}'>${langEbook[currentLangId].langTitle} Ebook File</a>`: langEbook[currentLangId].file }`;
 
                 $("#ebook_selected_file").html(`Selected File : `+currentebookfile)
             }
+
+
             function errorText(text){
                 return `<div class="alert alert-danger"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <i class="material-icons">close</i> </button> <span>${text}.</span> </div>`
             }
+
+
+            new Vue({
+                el: '#app',
+                data: {
+                    showMediaManager: false,
+                    selectedEventName: 'editor',
+                },
+                created: function(){
+                    window.eventHub.$on('media-manager-notification', function (message, type, time) {
+                        // Your custom notifiction call here...
+                        console.log(message);
+                    });
+                },
+                mounted(){
+                    window.eventHub.$on('media-manager-selected-editor', (file) => {
+                        langEbook[currentLangId].file = file.relativePath
+                        $("#ebook_selected_file").text(`Selected File : ${langEbook[currentLangId].file}`)
+                        // Do something with the file info...
+                        //console.log(file.name);
+                        //console.log(file.mimeType);
+                        //console.log(file.relativePath);
+                        //console.log(file.webPath);
+
+                        // Hide the Media Manager...
+                        this.showMediaManager = false;
+
+                    })
+                },
+                methods: {
+                    preventDefaults (e){
+                        e.preventDefault()
+                        this.showMediaManager = true
+                    }
+                }
+            });
+
+
+
 
         });
     </script>

@@ -3,9 +3,15 @@
 @section('title','Book/Create')
 
 @push('css')
+    <link href="{{asset('assets/admin/css/app.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/admin/summernote/summernote-bs4.css')}}" rel="stylesheet">
+    <link href="{{asset('assets/admin/css/multiselect.css')}}" rel="stylesheet">
+    <style>
+        .media-gallary-postion .modal{
+            margin-left: 180px;}
+    </style>
 
-<link href="{{asset('assets/admin/summernote/summernote-bs4.css')}}" rel="stylesheet">
-<link href="{{asset('assets/admin/css/multiselect.css')}}" rel="stylesheet">
+
 @endpush
 
 
@@ -37,13 +43,22 @@
                 <input type="file" class="form-control-file" name="image" accept="image/x-png,image/gif,image/jpeg,image/png">
             </div>
 
-
+                <div id="app" class="media-gallary-postion">
+                    <media-modal v-if="showMediaManager" @media-modal-close="showMediaManager = false">
+                        <media-manager
+                            :is-modal="true"
+                            :selected-event-name="selectedEventName"
+                            @media-modal-close="showMediaManager = false"
+                        >
+                        </media-manager>
+                    </media-modal>
                 <div class="form-group col-sm-8 col-md-12">
                     <label for="ebook" class="font-weight-bold">Ebook File :</label>
                     <label for="selected-file" id="ebook_selected_file" class="font-weight-normal d-block">Selected File : </label>
-                    <input type="file" class="form-control-file" name="ebook">
+                     <input type="file" name="ebook" @click="preventDefaults">
                 </div>
 
+                </div>
                 <div class="form-group col-sm-8 col-md-12">
                     <label for="title" class="font-weight-bold">Description :</label>
                     <textarea class="form-control" rows="5" name="description" id="summernote"></textarea>
@@ -106,11 +121,12 @@
 
         </form>
     </div>
+
 @endsection
 
 
 @push('script')
-<script src="{{asset('assets/admin/js/multiselect.min.js')}}"></script>
+    <script src="{{asset('assets/admin/js/multiselect.min.js')}}"></script>
 <script src="{{asset('assets/admin/summernote/summernote-bs4.min.js')}}"></script>
 <script>
     $(document).ready(function() {
@@ -167,9 +183,10 @@ $("[name='title']").change(function () {
 })
 
 
-$("[name='ebook']").change(function () {
-    langEbook[currentLangId].file = [...this.files][0]
-    $("#ebook_selected_file").text(`Selected File : ${langEbook[currentLangId].file.name}`)
+$("[name='ebook']").click(function (e) {
+    e.preventDefault()
+    //langEbook[currentLangId].file = [...this.files][0]
+    //$("#ebook_selected_file").text(`Selected File : ${langEbook[currentLangId].file.name}`)
 })
 
 
@@ -220,11 +237,11 @@ $("#submit").click(function () {
         console.log(e.target.responseText)
     const loads = JSON.parse(e.target.responseText)
         if(loads.status){
-            window.open('{{route('admin.dashboard.ajaxSuccess',['route' => 'admin.book.index','status' => 'Book Successfully Added'])}}',"_self")
+            window.open('{{route('admin.dashboard.ajaxSuccess',['route' => 'admin.book.edit','status' => 'Book Successfully Added','routeValue' => 'replaceit'])}}'.replace('replaceit',loads.bookId),"_self")
         }
 
     })
-
+    //ajax.setRequestHeader('Content-Type','multipart/form-data')
     ajax.open('POST',"{{route('admin.book.store')}}");
     ajax.send(form);
 
@@ -248,21 +265,62 @@ function returnCurrentLangData() {
    prevLangId = currentLangId
    langData[prevLangId].title = $("[name='title']").val()
    langData[prevLangId].description = $('#summernote').summernote('code')
-   langEbook[prevLangId].file = $("[name='ebook']").prop('files')[0] ? $("[name='ebook']").prop('files')[0] : langEbook[prevLangId].file;
+   //langEbook[prevLangId].file = langEbook[prevLangId].file;
 
    currentLangId = $("#language").val()
    currentLangData = langData[currentLangId]
    $("[name='title']").val(currentLangData.title)
    $('#summernote').summernote('code',currentLangData.description)
-   $("[name='ebook']").val('')
-   $("#ebook_selected_file").text(`Selected File : ${langEbook[currentLangId].file.name}`)
+   //$("[name='ebook']").val('')
+   $("#ebook_selected_file").text(`Selected File : ${langEbook[currentLangId].file}`)
 
         }
 function errorText(text){
     return `<div class="alert alert-danger"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <i class="material-icons">close</i> </button> <span>${text}.</span> </div>`
 }
 
-    });
+
+        new Vue({
+            el: '#app',
+            data: {
+                showMediaManager: false,
+                selectedEventName: 'editor',
+            },
+            created: function(){
+                window.eventHub.$on('media-manager-notification', function (message, type, time) {
+                    // Your custom notifiction call here...
+                    console.log(message);
+                });
+            },
+            mounted(){
+                window.eventHub.$on('media-manager-selected-editor', (file) => {
+                    langEbook[currentLangId].file = file.relativePath
+                    $("#ebook_selected_file").text(`Selected File : ${langEbook[currentLangId].file}`)
+                    // Do something with the file info...
+                    //console.log(file.name);
+                    //console.log(file.mimeType);
+                    //console.log(file.relativePath);
+                    //console.log(file.webPath);
+
+                    // Hide the Media Manager...
+                    this.showMediaManager = false;
+
+                })
+            },
+            methods: {
+                preventDefaults (e){
+                    e.preventDefault()
+                    this.showMediaManager = true
+                }
+            }
+        });
+
+
+
+
+
+        });
+
 </script>
 
 @endpush

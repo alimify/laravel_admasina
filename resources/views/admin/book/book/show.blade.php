@@ -52,7 +52,7 @@
             </div>
             <div class="book-link row mb-3">
                 <b>Book Links :</b> @foreach($book->dataLinks as $dataLink)
-                                        <a href="{{asset('storage/'.$dataLink->link)}}" class="d-block">{{\App\Language::find($dataLink->pivot->language_id)->language}}</a>,
+                                        <a href="{{asset($dataLink->link)}}" class="d-block">{{\App\Language::find($dataLink->pivot->language_id)->language}}</a>,
                                         @endforeach
             </div>
             <div class="book-category row mb-3">

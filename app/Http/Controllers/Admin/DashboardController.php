@@ -117,9 +117,15 @@ class DashboardController extends Controller
         return view('admin.main.dashboard',compact('postArr','bookArr','userArr','commentArr'));
     }
 
-    public function ajaxSuccess($route,$status){
+    public function mediaManager(){
+        return response()->view('admin.mediamanager.index');
+    }
+
+    public function ajaxSuccess($route,$status,$rv = false){
         if($route == 'false'){
             return redirect()->back()->with('status',$status);
+        }elseif ($rv){
+            return redirect()->route($route,$rv)->with('status',$status);
         }
         return redirect()->route($route)->with('status',$status);
     }

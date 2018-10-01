@@ -35,7 +35,7 @@ Route::group(['as' => 'admin.','prefix' => 'admin','namespace' => 'Admin','middl
     //,'middleware' => ['auth','admin']
 
     Route::get('dashboard','DashboardController@index')->name('dashboard');
-    Route::get('dashboard/ajaxSuccess/{route}/{status}','DashboardController@ajaxSuccess')->name('dashboard.ajaxSuccess');
+    Route::get('dashboard/ajaxSuccess/{route}/{status}/{rv?}','DashboardController@ajaxSuccess')->name('dashboard.ajaxSuccess');
     //Book
     Route::resource('book','BookController');
     Route::resource('bookCategory','BookCategoryController');
@@ -55,6 +55,9 @@ Route::group(['as' => 'admin.','prefix' => 'admin','namespace' => 'Admin','middl
     Route::resource('websetting','WebSettingController');
     Route::get('/book/changeStatus/{book}','BookController@ChangeStatus')->name('book.changeStatus');
     Route::get('/post/changeStatus/{post}','PostController@ChangeStatus')->name('post.changeStatus');
+
+    /*Media Manager*/
+    Route::get('/media-manager','DashboardController@mediaManager')->name('media-manager');
 
     /*System Setting */
     Route::resource('systemSetting','SystemSetting');
@@ -80,3 +83,6 @@ Route::group(['as' => 'user.','prefix' => 'user','namespace' => 'User','middlewa
 Route::get('user/profile/{id?}','User\UserController@profile')->name('user.profile.show');
 
 Auth::routes();
+
+/*Media Manager*/
+\TalvBansal\MediaManager\Routes\MediaRoutes::get();

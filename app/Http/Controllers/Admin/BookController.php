@@ -101,8 +101,9 @@ class BookController extends Controller
                 'description_id' => $this->addDescription($mainData->description)
             ];
 
-            $ebookFile = $request->file('ebook'.$mainData->langId);
-            if(is_file($ebookFile)) {
+            $ebookprefix = 'ebook'.$mainData->langId;
+            $ebookFile = $request->$ebookprefix;
+            if($ebookFile) {
                 $ebookLinkdata[] = [
                     'language_id' => $mainData->langId,
                     'data_link_id' => $this->addEbookFile($ebookFile)
@@ -178,21 +179,8 @@ class BookController extends Controller
     }
 
    private function addEbookFile($file){
-
-        if(is_file($file)){
-            $directory = 'ebook/'.Carbon::now()->format('F-Y');
-
-            if (!Storage::disk('public')->exists($directory)) {
-                Storage::disk('public')->makeDirectory($directory);
-            }
-            $link = Storage::disk('public')->putFile($directory,$file);
-        }
-        else{
-            return;
-        }
-
         $dataLink = new DataLink();
-        $dataLink->link = $link;
+        $dataLink->link = $file;
         $dataLink->save();
         return $dataLink->id;
    }
@@ -337,8 +325,9 @@ class BookController extends Controller
                 'description_id' => $this->addDescription($mainData->description)
             ];
 
-            $ebookFile = $request->file('ebook'.$mainData->langId);
-            $yesNewFile = is_file($ebookFile);
+            $ebookPrefix = 'ebook'.$mainData->langId;
+            $ebookFile = $request->$ebookPrefix;
+            $yesNewFile = isset($ebookFile) && $ebookFile;
             $ebookFileId = $this->checkExistingFile($yesNewFile,$ebookFile,$book->id,$mainData->langId);
             if($ebookFileId) {
                 $ebookLinkdata[] = [

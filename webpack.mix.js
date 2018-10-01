@@ -11,5 +11,9 @@ let mix = require('laravel-mix');
  |
  */
 
-mix.js('resources/assets/js/app.js', 'public/js')
-   .sass('resources/assets/sass/app.scss', 'public/css');
+/*Copy SVG */
+mix.copy('resources/assets/talvbansal/media-manager/fonts/', 'public/assets/admin/fonts/');
+
+
+mix.js('resources/assets/js/app.js', 'public/assets/admin/js')
+   .sass('resources/assets/sass/app.scss', 'public/assets/admin/css');

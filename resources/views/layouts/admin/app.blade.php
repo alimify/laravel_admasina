@@ -6,9 +6,11 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, shrink-to-fit=no">
     <meta name="description" content="ADMASINA.COM - Free ebook download and reads online">
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <meta name="author" content="ADMASINA">
     <meta name="keyword" content="admasina,ebook,free ebook,download ebook">
     <title>@yield('title')</title>
+    <script src="{{asset('assets/admin/js/app.js')}}"></script>
     <!-- Icons-->
     <link href="{{asset('assets/admin/node_modules/@coreui/icons/css/coreui-icons.min.css')}}" rel="stylesheet">
     <link href="{{asset('assets/admin/node_modules/flag-icon-css/css/flag-icon.min.css')}}" rel="stylesheet">
@@ -91,6 +93,10 @@
                 </li>
 
                 <li class="nav-title">Extra</li>
+                <li>
+                    <a class="nav-link" href="{{route('admin.media-manager')}}">
+                        <i class="fa fa-image"></i> Media Manager</a>
+                </li>
              <li class="nav-item nav-dropdown">
               <a class="nav-link nav-dropdown-toggle" href="javascript:void()">
                 <i class="nav-icon icon-bell"></i> Others</a>
@@ -174,9 +180,9 @@
         <span>&copy; 2018 .</span>
     </div>
 </footer>
-<script src="{{asset('assets/admin/node_modules/jquery/dist/jquery.min.js')}}"></script>
+<!--<script src="{{asset('assets/admin/node_modules/jquery/dist/jquery.min.js')}}"></script>
 <script src="{{asset('assets/admin/node_modules/popper.js/dist/umd/popper.min.js')}}"></script>
-<script src="{{asset('assets/admin/node_modules/bootstrap/dist/js/bootstrap.min.js')}}"></script>
+<script src="{{asset('assets/admin/node_modules/bootstrap/dist/js/bootstrap.min.js')}}"></script>-->
 <script src="{{asset('assets/admin/node_modules/pace-progress/pace.min.js')}}"></script>
 <script src="{{asset('assets/admin/node_modules/perfect-scrollbar/dist/perfect-scrollbar.min.js')}}"></script>
 <script src="{{asset('assets/admin/node_modules/@coreui/coreui/dist/js/coreui.min.js')}}"></script>
