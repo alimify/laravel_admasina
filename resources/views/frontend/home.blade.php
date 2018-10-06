@@ -82,7 +82,7 @@
                 <div class="single-post info-area ">
 
                     <div class="latest-post-area about-area">
-                        <h4 class="title"><b>Latest Article</b></h4>
+                        <h4 class="title"><b>Latest Articles</b></h4>
                         <ul>
    @foreach($articles as $article)
                             <li>

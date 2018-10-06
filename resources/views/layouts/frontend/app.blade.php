@@ -44,8 +44,8 @@
 <div class="header-n-search">
         <ul class="main-menu visible-on-click" id="main-menu">
             <li><a href="{{route('index')}}">HOME</a> </li>
-            <li><a href="{{route('book')}}">BOOK</a></li>
-            <li><a href="{{route('article')}}">ARTICLE</a></li>
+            <li><a href="{{route('book')}}">BOOKS</a></li>
+            <li><a href="{{route('article')}}">ARTICLES</a></li>
             <li><a href="{{route('aboutus')}}">ABOUT US</a></li>
             <li><a href="{{route('contactus')}}">CONTACT US</a></li>
             <li><a href="{{route('language')}}">LANGUAGE</a></li>
