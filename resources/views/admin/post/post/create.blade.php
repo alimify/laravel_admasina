@@ -167,16 +167,16 @@
          var dtLang = langData[{{Config::get('websettings.defaultLanguage')}}],
               errorF = false;
 
-         if(dtLang.title.length < 20){
+         if(dtLang.title.length < 2){
              errorF = !errorF
-             $(errorText('Default language title should be greater than 20 letters.')).insertBefore("div.animated")
+             $(errorText('Default language title should be greater than 2 letters.')).insertBefore("div.animated")
          }
 
-         if(dtLang.description.length < 30){
+         if(dtLang.description.length < 10){
              if(!errorF){
                  errorF = true
              }
-             $(errorText('Default language description should be greater than 30 letters.')).insertBefore("div.animated")
+             $(errorText('Default language description should be greater than 10 letters.')).insertBefore("div.animated")
          }
 
          if(!errorF) {

@@ -195,10 +195,10 @@
 
                 const defaultData = langData[{{Config::get('websettings.defaultLanguage')}}]
                 var error = [];
-                if(defaultData.title.length < 2){
+                if(defaultData.title.length < 1){
                     error.push('Default language book title is required')
                 }
-                if(defaultData.description.length < 15){
+                if(defaultData.description.length < 5){
                     error.push('Default language book description is required')
                 }
 
