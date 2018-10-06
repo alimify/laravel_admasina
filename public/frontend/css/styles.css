@@ -166,7 +166,7 @@ header .src-area .src-btn{ position: absolute; top: 0; bottom: 0; left: 0; width
 
 .owl-carousel .swiper-container{ overflow: visible; }
 
-.owl-carousel .category{position: absolute; bottom: 2px;right:0;left:0;z-index: 9999;color:black;font-size: 10px;}
+.owl-carousel .category{position: absolute; bottom: 3px;right:0;left:0;z-index: 9999;color:black;font-size: 10px;}
  
 .owl-carousels .category:after{ content:''; position: absolute; top: 0; bottom: 0; left: 0; right: 0; z-index: -1;
 	background: rgba(0,0,0,.4); } 
@@ -175,8 +175,9 @@ header .src-area .src-btn{ position: absolute; top: 0; bottom: 0; left: 0; width
 /* SLIDER CONTROLER */
 .owl-carousel .item {
     height: 290px;
-    border: 1px solid #FFFFFF;
+    border: 1px solid lightblue;
     transition: .5s ease;
+    background: white;
 }
 .owl-carousel .item:hover{
     border: 1px solid teal;
