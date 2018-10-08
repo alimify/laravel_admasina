@@ -11,6 +11,7 @@
 |
 */
 
+
 Route::get('/', 'FrontEnd\HomeController@index')->name('index');
 Route::get('/home', 'FrontEnd\HomeController@index')->name('home');
 Route::get('/search','FrontEnd\HomeController@search')->name('search');
@@ -86,3 +87,5 @@ Auth::routes();
 
 /*Media Manager*/
 \TalvBansal\MediaManager\Routes\MediaRoutes::get();
+
+
