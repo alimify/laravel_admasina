@@ -47,34 +47,6 @@ class AppServiceProvider extends ServiceProvider
         }
 
 
-        //No Logic Should Apply Here. but here am lol.
-        ///Load User Setting
-        view()->composer('*', function($view)
-        {
-         if(Auth::check()){
-             $userSettings = Laraption::where('optkey','REGEXP','user.setting.'.Auth::id())
-                                             ->get();
-
-             foreach ($userSettings as $userSetting) {
-                 $optkey = str_replace('.'.Auth::id(),'',$userSetting->optkey);
-                 if($optkey == 'user.setting.language'){
-                     Config::set('language',$userSetting->optvalue);
-                 }else{
-                     Config::set($optkey, $userSetting->optvalue);
-                 }
-
-                 Config::set($optkey,$userSetting->optvalue);
-             }
-         }elseif(Cookie::get('language')){
-             Config::set('language',Cookie::get('language'));
-         }elseif(!Cookie::get('language')){
-             Config::set('language',Config::get('websettings.defaultLanguage'));
-         }
-
-        });
-
-
-
 
     }
 
@@ -85,6 +57,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function register()
     {
-        //
+
     }
 }

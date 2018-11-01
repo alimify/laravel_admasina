@@ -5,11 +5,9 @@ namespace App\Http\Controllers\Admin;
 use App\Author;
 use App\Translator;
 use App\Category;
-use App\Description;
 use App\Language;
 use App\Post;
 use App\Tag;
-use App\Title;
 use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
@@ -45,18 +43,8 @@ class PostController extends Controller
         $categories = Category::all()->where('category_for','=','post');
         $tags = Tag::all();
 
-        $langData = [];
 
-        foreach ($languages as $language){
-            $langData[$language->id] = [
-                'langId' => $language->id,
-                'title' => '',
-                'description' => ''
-            ];
-        }
-
-        return view('admin.post.post.create',compact('authors','translators','languages','categories','tags',
-            'langData'));
+        return view('admin.post.post.create',compact('authors','translators','languages','categories','tags'));
     }
 
     /**
@@ -67,64 +55,48 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        $mainData = json_decode($request->data);
-        $createPost = false;
-        $imageName = 'default.png';
-        $image = $request->file('image');
 
-        $descriptionData = [];
-        $titleData = [];
-        foreach ($mainData->langData as $langData){
-            $descriptionData[] = [
-                'language_id' => $langData->langId,
-                'description_id' => $this->addDescription($langData->description)
-            ];
-            $titleData[] = [
-                'language_id' => $langData->langId,
-                'title_id' => $this->addTitle($langData->title)
-            ];
-            if($langData->title){
-                $createPost = true;
-            }
-        }
+        $this->validate($request,[
+            'title' => 'required',
+            'description' => 'required',
+            'image' => 'mimes:jpg,jpeg,png,bmp,gif',
+            'language' => 'required'
+        ]);
+
+        $image = $request->file('image');
+        $dir = 'post';
+        $imageName = 'storage/'.$dir.'/default.png';
 
         if(isset($image) && $image){
             $imageName = uniqid().str_slug(Carbon::now()).'.'.$image->getClientOriginalExtension();
 
-            if (!Storage::disk('public')->exists('post')) {
-                Storage::disk('public')->makeDirectory('post');
+            if (!Storage::disk('public')->exists($dir)) {
+                Storage::disk('public')->makeDirectory($dir);
             }
-            $postImage = Image::make($image)->resize(512,350)->save('temp/tmp.'.$image->getClientOriginalExtension());
-            Storage::disk('public')->put('post/'.$imageName,$postImage);
+
+            $postImage = Image::make($image)->resize(512,350)->save('storage/'.$dir.'/tmp.'.$image->getClientOriginalExtension());
+            Storage::disk('public')->put($dir.'/'.$imageName,$postImage);
+
+            $imageName = 'storage/'.$dir.'/'.$imageName;
 
         }
 
 
-
-        if($createPost){
             $post = new Post();
             $post->user_id = Auth::id();
+            $post->title = $request->title;
+            $post->description = $request->description;
+            $post->language_id = $request->language;
             $post->image = $imageName;
-            $post->is_active = $mainData->active;
+            $post->is_active = $request->active ? true : false;
             $post->views = 0;
             $post->save();
-            $post->titles()->attach($titleData);
-            $post->descriptions()->attach($descriptionData);
-            $post->authors()->attach($mainData->author);
-            $post->translators()->attach($mainData->translator);
-            $post->categories()->attach($mainData->category);
-            $post->tags()->attach($mainData->tag);
+            $post->authors()->attach($request->author);
+            $post->translators()->attach($request->translator);
+            $post->categories()->attach($request->category);
+            $post->tags()->attach($request->tag);
 
-           return response()->json([
-                'status' => true,
-                'id' => $post->id
-            ]);
-        }
-
-        return response()->json([
-            'status' => false
-        ]);
-
+            return redirect()->route('admin.post.index')->with('status','Post Successfully Added.');
     }
 
     /**
@@ -152,32 +124,12 @@ class PostController extends Controller
         $categories = Category::all()->where('category_for','=','post');
         $tags = Tag::all();
 
-        $postMainTitles = $post->titles;
-        $postMainDescriptions = $post->descriptions;
         $postMainAuthors = $post->authors;
         $postMainTranslators = $post->translators;
         $postMainCategories = $post->categories;
         $postMainTags = $post->tags;
 
         /*Start Processing*/
-        $postMainTitleKey = [];
-        foreach ($postMainTitles as $singlePostMainTitle){
-            $postMainTitleKey[$singlePostMainTitle->pivot->language_id] = $singlePostMainTitle;
-        }
-
-        $postMainDescriptionKey = [];
-        foreach ($postMainDescriptions as $singlePostMainDescription){
-            $postMainDescriptionKey[$singlePostMainDescription->pivot->language_id] = $singlePostMainDescription;
-        }
-
-        $langData = [];
-        foreach ($languages as $language){
-            $langData[$language->id] = [
-                'langId' => $language->id,
-                'title' => $postMainTitleKey[$language->id]->title ??'',
-                'description' => $postMainDescriptionKey[$language->id]->description ??''
-            ];
-        }
 
         $authorIdArray = [];
         foreach ($postMainAuthors as $singleAuthorData){
@@ -202,7 +154,7 @@ class PostController extends Controller
             $tagIdArray[] = $singlePostMainTag->id;
         }
 
-        return view('admin.post.post.edit',compact('post','authors','translators','languages','categories','tags','langData',
+        return view('admin.post.post.edit',compact('post','authors','translators','languages','categories','tags',
             'categoryIdArray','tagIdArray','authorIdArray','translatorIdArray'));
     }
 
@@ -215,52 +167,42 @@ class PostController extends Controller
      */
     public function update(Request $request, Post $post)
     {
-        $post->titles()->delete();
-        $post->descriptions()->delete();
 
-        $mainData = json_decode($request->data);
-        $imageName = $post->image;
+        $this->validate($request,[
+            'title' => 'required',
+            'description' => 'required',
+            'image' => 'mimes:jpg,jpeg,png,gif,bmp',
+            'language' => 'required'
+        ]);
+
         $image = $request->file('image');
-
-        $descriptionData = [];
-        $titleData = [];
-        foreach ($mainData->langData as $langData){
-            $descriptionData[] = [
-                'language_id' => $langData->langId,
-                'description_id' => $this->addDescription($langData->description)
-            ];
-            $titleData[] = [
-                'language_id' => $langData->langId,
-                'title_id' => $this->addTitle($langData->title)
-            ];
-        }
+        $dir   = 'post';
 
         if(isset($image) && $image){
             $imageName = uniqid().str_slug(Carbon::now()).'.'.$image->getClientOriginalExtension();
 
-            if(Storage::disk('public')->exists('post/'.$post->image)){
-                Storage::disk('public')->delete('book/'.$post->image);
+            if(Storage::disk('public')->exists($this->rmstorage($post->image))){
+                Storage::disk('public')->delete($this->rmstorage($post->image));
             }
-            $postImage = Image::make($image)->resize(512,350)->save('temp/tmp.'.$image->getClientOriginalExtension());
-            Storage::disk('public')->put('post/'.$imageName,$postImage);
+
+            $postImage = Image::make($image)->resize(512,350)->save('storage/'.$dir.'/tmp.'.$image->getClientOriginalExtension());
+            Storage::disk('public')->put($dir.'/'.$imageName,$postImage);
+
+            $post->image = 'storage/'.$dir.'/'.$imageName;
 
         }
 
-
-            $post->image = $imageName;
-            $post->is_active = $mainData->active;
+            $post->title = $request->title;
+            $post->description = $request->description;
+            $post->language_id = $request->language;
+            $post->is_active = $request->active ? true : false;
             $post->save();
-            $post->titles()->sync($titleData);
-            $post->descriptions()->sync($descriptionData);
-            $post->authors()->sync($mainData->author);
-            $post->translators()->sync($mainData->translator);
-            $post->categories()->sync($mainData->category);
-            $post->tags()->sync($mainData->tag);
+            $post->authors()->sync($request->author);
+            $post->translators()->sync($request->translator);
+            $post->categories()->sync($request->category);
+            $post->tags()->sync($request->tag);
 
-            return response()->json([
-                'status' => true,
-                'id' => $post->id
-            ]);
+            return redirect()->back()->with('status','Post Successfully Updated.');
 
     }
 
@@ -272,32 +214,19 @@ class PostController extends Controller
      */
     public function destroy(Post $post)
     {
-        if(Storage::disk('public')->exists('post/'.$post->image)){
-            Storage::disk('public')->delete('book/'.$post->image);
+        if(Storage::disk('public')->exists($this->rmstorage($post->image))){
+            Storage::disk('public')->delete($this->rmstorage($post->image));
         }
-        $post->titles()->delete();
-        $post->titles()->detach();
-        $post->descriptions()->delete();
-        $post->descriptions()->detach();
+
+        $post->tags()->detach();
+        $post->authors()->detach();
+        $post->translators()->detach();
+        $post->categories()->detach();
         $post->delete();
+
         return redirect()->route('admin.post.index')->with('status','Post Successfully Deleted.');
     }
 
-
-  /* Extra Method */
-    private function addTitle($title){
-        $postTitle = new Title();
-        $postTitle->title = preg_replace('/\s+/', ' ', $title);
-        $postTitle->save();
-        return $postTitle->id;
-    }
-
-    private  function addDescription($text){
-        $description = new Description();
-        $description->description = $text;
-        $description->save();
-        return $description->id;
-    }
 
     public function changeStatus(Post $post){
         $post->is_active = !$post->is_active;
@@ -305,5 +234,7 @@ class PostController extends Controller
         return redirect()->back()->with('status','Post Status Successfully Updated..');
     }
 
-
+    public function rmstorage($storage){
+        return str_replace('storage/','',$storage);
+    }
 }

@@ -18,7 +18,7 @@
 
     <div class="bg-white container-fluid">
         <h2>
-            {{$post->dTitle->first()->title??''}}
+            {{$post->title}}
         </h2>
         <div class="text-muted">
             <b>Status : </b> {{$post->is_active ? 'Published' : 'Draft'}} ,
@@ -28,10 +28,10 @@
 
         <div class="border container-fluid">
             <div class="post-image row mb-3">
-                <img class="img-thumbnail" src="{{asset('storage/post/'.$post->image)}}" alt="">
+                <img class="img-thumbnail" src="{{asset($post->image)}}" alt="">
             </div>
             <div class="post-description row mb-3">
-                <b>Description : </b> {!!html_entity_decode($post->dDescription->first()->description??'')!!}
+                <b>Description : </b> {!!html_entity_decode($post->description)!!}
             </div>
             <div class="post-rating row mb-3">
                 <b>Views :</b> {{$post->views}}

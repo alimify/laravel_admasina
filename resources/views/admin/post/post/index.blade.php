@@ -34,9 +34,9 @@
         <tbody>
         @foreach($posts as $post)
         <tr>
-            <th><img src="{{asset('storage/post/'.$post->image)}}" alt="" width="80px"></th>
+            <th><img src="{{asset($post->image)}}" alt="" width="80px"></th>
             <td>
-                    {{str_limit($post->dTitle->first()->title??'',40)}}
+                    {{str_limit($post->title,40)}}
             </td>
             <!--<td>{{$post->user->name}}</td>-->
             <td>

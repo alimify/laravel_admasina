@@ -20,11 +20,13 @@ class HomeController extends Controller
 {
 
     public function index(){
-     $books = Book::latest()->where('is_active',true)
-                            ->paginate(9);
 
-     $articles = Post::latest()->where('is_active',true)
-                               ->paginate(9);
+
+     $language = Config::get('language');
+     $language = Language::find($language);
+     $books = $language ? $language->books()->latest()->paginate(9)->where('is_active',true) : [];
+
+     $articles = $language ? $language->posts()->latest()->paginate(9)->where('is_active',true) : [];
 
      $bookCategories = Category::where('category_for','book')
                                  ->where('is_active',true)
@@ -141,10 +143,13 @@ class HomeController extends Controller
 
 
     public function book($type = null,$id = null){
-       if($type == 'category' && $id){
+        $language = Config::get('language');
+
+        if($type == 'category' && $id){
            $books = Category::find($id)->books()
                                        ->latest()
                                        ->where('books.is_active',true)
+                                       ->where('language_id',$language)
                                        ->paginate(Config::get('websettings.siteBookPerPage'));
 
        }elseif ($type == 'tag' && $id){
@@ -152,12 +157,14 @@ class HomeController extends Controller
            $books = Tag::find($id)->books()
                                   ->latest()
                                   ->where('books.is_active',true)
+                                  ->where('language_id',$language)
                                   ->paginate(Config::get('websettings.siteBookPerPage'));
 
        }elseif($type && !$id){
            abort(404);
        }elseif(!$type && !$id){
            $books = Book::latest()->where('is_active',true)
+                                  ->where('language_id',$language)
                                   ->paginate(Config::get('websettings.siteBookPerPage'));
        }else{
            abort(404);
@@ -175,7 +182,7 @@ class HomeController extends Controller
 
 
     public function article($type = null,$id = null){
-
+        $language = Config::get('language');
         $postCategories = Category::where('category_for','post')->where('is_active',true)
                                                                 ->get();
 
@@ -183,11 +190,13 @@ class HomeController extends Controller
             $articles = Category::find($id)->posts()
                                            ->latest()
                                            ->where('posts.is_active',true)
+                                           ->where('language_id',$language)
                                            ->paginate(Config::get('websettings.siteArticlePerPage'));
         }elseif ($type == 'tag' && $id){
             $articles = Tag::find($id)->posts()
                                       ->latest()
                                       ->where('posts.is_active',true)
+                                      ->where('language_id',$language)
                                       ->paginate(Config::get('websettings.siteArticlePerPage'));
 
         }elseif ($type == 'author' && $id){
@@ -198,6 +207,7 @@ class HomeController extends Controller
             abort(404);
         }elseif(!$type && !$id){
             $articles = Post::latest()->where('is_active',true)
+                                      ->where('language_id',$language)
                                       ->paginate(Config::get('websettings.siteArticlePerPage'));
         }else{
             abort(404);

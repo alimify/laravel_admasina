@@ -29,10 +29,10 @@
         @foreach($books as $book)
         <tr>
             <th>
-                <img src="{{asset('storage/book/'.$book->image)}}" width="80px" alt="">
+                <img src="{{asset($book->image)}}" width="80px" alt="">
             </th>
             <td>
-                {{str_limit($book->dTitle->first()->title??'',40)}}
+                {{str_limit($book->title??'',40)}}
             </td>
             <td>
                 @foreach($book->authors as $author)

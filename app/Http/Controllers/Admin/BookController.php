@@ -5,19 +5,13 @@ namespace App\Http\Controllers\Admin;
 use App\Author;
 use App\Book;
 use App\Category;
-use App\DataLink;
-use App\Description;
 use App\Language;
-use App\Laraption;
 use App\Tag;
-use App\Title;
 use App\Translator;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
 use App\Http\Controllers\Controller;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
 use Intervention\Image\Facades\Image;
 
@@ -47,26 +41,8 @@ class BookController extends Controller
         $tags = Tag::all();
         $translators = Translator::all();
         $languages = Language::all()->where('is_active',true);
-        $langData = [];
-        $langEbook = [];
-        $langIdList = [];
-        foreach ($languages as $language){
-            $langData[$language->id] = [
-                'langId' => $language->id,
-                'title' => '',
-                'description' => ''
-            ];
 
-            $langEbook[$language->id] = [
-                'langId' => $language->id,
-                'file' => ''
-            ];
-
-            $langIdList[] = $language->id;
-
-        }
-
-        return view('admin.book.book.create',compact('authors','categories','tags','translators','languages','langData','langEbook','langIdList'));
+        return view('admin.book.book.create',compact('authors','categories','tags','translators','languages'));
     }
 
 
@@ -78,112 +54,47 @@ class BookController extends Controller
      */
     public function store(Request $request)
     {
-        $requestData = json_decode($request->data);
-        $requestMainData = $requestData->main;
 
-         $createBook = false;
-         $titleData = [];
-         $descriptionData = [];
-         $ebookLinkdata = [];
+       $this->validate($request,[
+           'title' => 'required',
+           'description' => 'required',
+           'image' => 'mimes:png,jpg,gif,jpeg,bmp',
+           'language' => 'required'
+       ]);
 
-        foreach ($requestMainData as $mainData){
-            if($mainData->title){
-                $createBook = true;
-            }
+       $imagename = 'storage/book/default.png';
+       $image = $request->file('image');
+       $slug = str_slug($request->title);
+       $dir = 'book';
+       if(isset($image) && $image){
 
-            $titleData[] = [
-                'language_id' => $mainData->langId,
-                'title_id' => $this->addTitle($mainData->title)
-            ];
+           if (!Storage::disk('public')->exists($dir)) {
+               Storage::disk('public')->makeDirectory($dir);
+           }
+           $imagename = $dir.'/'.$slug.'-'.uniqid().'.'.$image->getClientOriginalExtension();
 
-            $descriptionData[] = [
-                'language_id' => $mainData->langId,
-                'description_id' => $this->addDescription($mainData->description)
-            ];
-
-            $ebookprefix = 'ebook'.$mainData->langId;
-            $ebookFile = $request->$ebookprefix;
-            if($ebookFile) {
-                $ebookLinkdata[] = [
-                    'language_id' => $mainData->langId,
-                    'data_link_id' => $this->addEbookFile($ebookFile)
-                ];
-            }
-        }
-
-
-
-        if($createBook){
-
-            $image = $request->file('image');
-            $imageName = 'default.png';
-
-
-            if(is_file($image)){
-                $imageName = uniqid().str_slug(Carbon::now()).'.'.$image->getClientOriginalExtension();
-
-
-                if (!Storage::disk('public')->exists('book')) {
-                    Storage::disk('public')->makeDirectory('book');
-                }
-
-                $bookImage = Image::make($image)->resize(512,512)->save('temp/tmp.'.$image->getClientOriginalExtension());
-                Storage::disk('public')->put('book/'.$imageName,$bookImage);
-
-            }
-
-
+           $bookImage = Image::make($image)->resize(512,512)->save('temp/tmp.'.$image->getClientOriginalExtension());
+           Storage::disk('public')->put($imagename,$bookImage);
+           $imagename = 'storage/'.$imagename;
+       }
 
 
        $book = new Book();
        $book->user_id = Auth::id();
-       $book->is_active = $requestData->is_active;
-       $book->image = $imageName;
+       $book->is_active = $request->active ? true : false;
+       $book->image = $imagename;
+       $book->title = $request->title;
+       $book->language_id = $request->language;
+       $book->description = $request->description;
+       $book->book_link = $request->book_link;
        $book->save();
-       $book->authors()->attach($requestData->author);
-       $book->tags()->attach($requestData->tag);
-       $book->translators()->attach($requestData->translator);
-       $book->categories()->attach($requestData->category);
-       $book->titles()->attach($titleData);
-       $book->descriptions()->attach($descriptionData);
-       $book->datalinks()->attach($ebookLinkdata);
-       $bookId = $book->id;
+       $book->authors()->attach($request->author);
+       $book->tags()->attach($request->tag);
+       $book->translators()->attach($request->translator);
+       $book->categories()->attach($request->category);
 
-            return response()->json([
-                'status' => true,
-                'bookId' => $bookId
-            ]);
-
-
-        }else{
-            return response()->json(['status' => false]);
+       return redirect()->route('admin.book.index')->with('status','Book Successfully Added');
     }
-
-       // return $langData;
-    }
-
-
-
-    private function addTitle($title){
-    $bookTitle = new Title();
-    $bookTitle->title = preg_replace('/\s+/', ' ', $title);
-    $bookTitle->save();
-    return $bookTitle->id;
-    }
-
-    private  function addDescription($text){
-        $description = new Description();
-        $description->description = $text;
-        $description->save();
-        return $description->id;
-    }
-
-   private function addEbookFile($file){
-        $dataLink = new DataLink();
-        $dataLink->link = $file;
-        $dataLink->save();
-        return $dataLink->id;
-   }
 
 
 
@@ -213,58 +124,10 @@ class BookController extends Controller
         $languages = Language::all()->where('is_active',true);
 
 
-        $mainBookTitles = $book->titles;
-        $mainBookDescriptions = $book->descriptions;
-        $mainBookDataLinks = $book->datalinks;
-
         $mainBookAuthors = $book->authors;
         $mainBookTranslators = $book->translators;
         $mainBookCategories = $book->categories;
         $mainBookTags = $book->tags;
-
-        /*Start Data Processing*/
-        $bookTitleLangKey = [];
-        foreach ($mainBookTitles as $singleBookTitle){
-            $bookTitleLangKey[$singleBookTitle->pivot->language_id] = $singleBookTitle;
-        }
-
-        $bookDescriptionLangKey = [];
-        foreach ($mainBookDescriptions as $singleBookDescription){
-            $bookDescriptionLangKey[$singleBookDescription->pivot->language_id] = $singleBookDescription;
-        }
-
-        $bookDatalinkLangKey = [];
-        foreach ($mainBookDataLinks as $singleDataLink){
-            $bookDatalinkLangKey[$singleDataLink->pivot->language_id] = $singleDataLink;
-        }
-
-
-        $langData = [];
-        $langEbook = [];
-        $langIdList = [];
-        $langAbleEbook = [];
-        foreach ($languages as $language){
-            $langData[$language->id] = [
-                'langId' => $language->id,
-                'title' => $bookTitleLangKey[$language->id]->title ?? '',
-                'description' => $bookDescriptionLangKey[$language->id]->description ?? ''
-            ];
-
-            $langEbook[$language->id] = [
-                'langId' => $language->id,
-                'file' => '',
-                'langTitle' => $language->language
-            ];
-            $langAbleEbook[$language->id] = [
-                'langId' => $language->id,
-                'link' => $bookDatalinkLangKey[$language->id]->link ?? ''
-            ];
-
-            $langIdList[] = $language->id;
-
-        }
-
-
 
         $authorIdArray = [];
         foreach ($mainBookAuthors as $singleAuthorData){
@@ -288,8 +151,7 @@ class BookController extends Controller
         }
 
         return view('admin.book.book.edit',compact('authors','book','languages','translators','tags',
-            'categories','langData','langEbook','langIdList','langAbleEbook',
-            'authorIdArray','translatorIdArray','categoryIdArray','tagIdArray'));
+            'categories','authorIdArray','translatorIdArray','categoryIdArray','tagIdArray'));
     }
 
     /**
@@ -301,82 +163,48 @@ class BookController extends Controller
      */
     public function update(Request $request, Book $book)
     {
+        $this->validate($request,[
+            'title' => 'required',
+            'description' => 'required',
+            'image' => 'mimes:png,gif,jpg,jpeg,bmp',
+            'language' => 'required'
+        ]);
 
-        $book->titles()->delete();
-        $book->descriptions()->delete();
+        $imagename = $book->image;
+        $image = $request->file('image');
+        $slug = str_slug($request->title);
+        $dir = 'book';
 
-        $requestData = json_decode($request->data);
-        $requestMainData = $requestData->main;
+        if(isset($image) && $image){
 
-
-        $titleData = [];
-        $descriptionData = [];
-        $ebookLinkdata = [];
-
-        foreach ($requestMainData as $mainData){
-
-            $titleData[] = [
-                'language_id' => $mainData->langId,
-                'title_id' => $this->addTitle($mainData->title)
-            ];
-
-            $descriptionData[] = [
-                'language_id' => $mainData->langId,
-                'description_id' => $this->addDescription($mainData->description)
-            ];
-
-            $ebookPrefix = 'ebook'.$mainData->langId;
-            $ebookFile = $request->$ebookPrefix;
-            $yesNewFile = isset($ebookFile) && $ebookFile;
-            $ebookFileId = $this->checkExistingFile($yesNewFile,$ebookFile,$book->id,$mainData->langId);
-            if($ebookFileId) {
-                $ebookLinkdata[] = [
-                    'language_id' => $mainData->langId,
-                    'data_link_id' => $ebookFileId
-                ];
+            $exist_image = $this->rmstorage($book->image);
+            if(Storage::disk('public')->exists($exist_image)){
+                Storage::disk('public')->delete($exist_image);
             }
+
+            $imagename = $dir.'/'.$slug.'-'.uniqid().'.'.$image->getClientOriginalExtension();
+
+            $bookImage = Image::make($image)->resize(512,512)->save('temp/tmp.'.$image->getClientOriginalExtension());
+            Storage::disk('public')->put($imagename,$bookImage);
+            $imagename = 'storage/'.$imagename;
 
         }
 
 
+        $book->user_id = Auth::id();
+        $book->is_active = $request->active ? true : false;
+        $book->image = $imagename;
+        $book->title = $request->title;
+        $book->language_id = $request->language;
+        $book->description = $request->description;
+        $book->book_link = $request->book_link;
+        $book->save();
+        $book->authors()->sync($request->author);
+        $book->tags()->sync($request->tag);
+        $book->translators()->sync($request->translator);
+        $book->categories()->sync($request->category);
 
-            $image = $request->file('image');
-            if(is_file($image)){
-                $imageName = uniqid().str_slug(Carbon::now()).'.'.$image->getClientOriginalExtension();
-
-                if (!Storage::disk('public')->exists('book')) {
-                    Storage::disk('public')->makeDirectory('book');
-                }
-
-                if(Storage::disk('public')->exists('book/'.$book->image)){
-                    Storage::disk('public')->delete('book/'.$book->image);
-                }
-
-                $bookImage = Image::make($image)->resize(512,512)->save('temp/tmp.'.$image->getClientOriginalExtension());
-                Storage::disk('public')->put('book/'.$imageName,$bookImage);
-
-            }else{
-                $imageName = $book->image;
-            }
-
-
-
-
-            $book->is_active = $requestData->is_active;
-            $book->image = $imageName;
-            $book->save();
-            $book->authors()->sync($requestData->author);
-            $book->tags()->sync($requestData->tag);
-            $book->translators()->sync($requestData->translator);
-            $book->categories()->sync($requestData->category);
-            $book->titles()->sync($titleData);
-            $book->descriptions()->sync($descriptionData);
-            $book->datalinks()->sync($ebookLinkdata);
-
-            return response()->json([
-                'status' => true,
-                'bookId' => $book->id
-            ]);
+        return redirect()->back()->with('status','Book Successfully Edited..');
     }
 
     public function changeStatus(Book $book){
@@ -386,30 +214,6 @@ class BookController extends Controller
     }
 
 
-    private function checkExistingFile($newfile,$file,$bookId,$langId){
-
-        $exist = DB::table('book_data_link')
-                     ->where('book_id','=',$bookId)
-                     ->where('language_id','=',$langId)
-                     ->first()
-        ;
-
-        if($newfile){
-            if(isset($exist->data_link_id)){
-              $existingData = \App\DataLink::find($exist->data_link_id);
-              if(isset($existingData->link)){
-                  if(Storage::disk('public')->exists($existingData->link)){
-                      Storage::disk('public')->delete($existingData->link);
-                  }
-                  $existingData->delete();
-              }
-            }
-
-            return $this->addEbookFile($file);
-        }
-
-        return $exist ? $exist->data_link_id : false;
-    }
 
     /**
      * Remove the specified resource from storage.
@@ -419,31 +223,22 @@ class BookController extends Controller
      */
     public function destroy(Book $book)
     {
-        foreach ($book->datalinks as $datalink){
-            if(Storage::disk('public')->exists($datalink->link)){
-                Storage::disk('public')->delete($datalink->link);
-            }
-        }
-
-        if(Storage::disk('public')->exists('book/'.$book->image)){
-            Storage::disk('public')->delete('book/'.$book->image);
+        $exist_image = $this->rmstorage($book->image);
+        if(Storage::disk('public')->exists($exist_image)){
+            Storage::disk('public')->delete($exist_image);
         }
 
         $book->tags()->detach();
         $book->authors()->detach();
         $book->translators()->detach();
         $book->categories()->detach();
-
-        $book->titles()->delete();
-        $book->titles()->detach();
-        $book->descriptions()->delete();
-        $book->descriptions()->detach();
-        $book->datalinks()->detach();
-        $book->datalinks()->delete();
         $book->delete();
 
         return redirect()->route('admin.book.index')->with('status','Book Successfully deleted..');
     }
 
+    public function rmstorage($storage){
+        return str_replace('storage/','',$storage);
+    }
 
 }

@@ -13,16 +13,12 @@
             <div class="item">
                 <a class="slider-category" href="{{route('viewBook',$book->id)}}">
                     <div class="slider-image">
-                    <img src="{{asset('storage/book/'.$book->image)}}" alt="book image">
+                    <img src="{{asset($book->image)}}" alt="book image">
                     </div>
                     <div class="category">
                         <div class="display-table center-text">
                             <div class="display-table-cell">
-                                @php
-                                    $title = $book->title->first()->title??0;
-                                    $title = $title ? $title : $book->dTitle->first()->title??'';
-                                @endphp
-                                <h3><b>{{str_limit($title,20)}}</b></h3>
+                                <h3><b>{{str_limit($book->title,20)}}</b></h3>
                             </div>
                         </div>
                     </div>
@@ -46,16 +42,11 @@
                         <div class="card h-100">
                             <div class="single-post post-style-1">
                                 <a href="{{route('viewBook',$book->id)}}">
-                                    <div class="blog-image"><img src="{{asset('storage/book/'.$book->image)}}" alt="image"></div>
+                                    <div class="blog-image"><img src="{{asset($book->image)}}" alt="image"></div>
 
 
                                     <div class="blog-info">
-                                        @php
-                                        $title = $book->title->first()->title??0;
-                                        $title = $title ? $title : $book->dTitle->first()->title??'';
-                                        @endphp
-
-                                        <span class="title"><b>{{str_limit($title,20)}}</b></span>
+                                        <span class="title"><b>{{str_limit($book->title,20)}}</b></span>
 
                                         <ul class="post-footer">
                                             <li><i class="ion-chatbubble"></i>{{$book->comments->count()}}</li>
@@ -82,15 +73,13 @@
                 <div class="single-post info-area ">
 
                     <div class="latest-post-area about-area">
-                        <h4 class="title"><b>Latest Articles</b></h4>
-                        <ul>
+                        <h4 class="title d-block"><b>Latest Articles</b></h4>
+
+                        <ul class="d-block">
+                            <li><a href=""></a></li>
    @foreach($articles as $article)
-                            <li>
-                                @php
-                                $title = $article->title->first()->title??0;
-                                $title = $title ? $title : $article->dTitle->first()->title??'';
-                                @endphp
-                                <a href="{{route('viewArticle',$article->id)}}">{{str_limit($title,50)}}</a>
+                            <li class="d-block">
+                                <a href="{{route('viewArticle',$article->id)}}">{{str_limit($article->title,50)}}</a>
                                 <span class="color-gray d-block">Posted : {{$article->created_at->diffForHumans()}}</span>
                             </li>
     @endforeach
@@ -113,7 +102,7 @@
 
                     <div class="tag-area">
 
-                        <h4 class="title"><b>BOOK CATEGORIES</b></h4>
+                        <h4 class="title d-block"><b>BOOK CATEGORIES</b></h4>
                         <ul>
      @foreach($bookCategories as $bookCategory)
                             <li><a href="{{route('book',['type' => 'category','id' => $bookCategory->id])}}">{{$bookCategory->title}}</a></li>

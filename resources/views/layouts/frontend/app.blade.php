@@ -35,9 +35,14 @@
             <li><a href="{{route('login')}}"><b>LOGIN</b></a></li>
                 @endif
         </ul>
+        <div class="banner-logo">
         <div class="logo-n-slogan">
             <a href="{{route('index')}}" class="logo"><img src="{{asset(Config::get('websettings.siteLogo'))}}" alt="Logo"></a>
             <span class="logo-slogan">BRIDGING THE GAP</span>
+        </div>
+            <div class="banner-middle">
+              <img src="{{asset('banner.jpg')}}">
+            </div>
         </div>
 
         <div class="menu-nav-icon" data-nav-menu="#main-menu"><i class="ion-navicon"></i></div>

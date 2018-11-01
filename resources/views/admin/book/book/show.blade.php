@@ -18,7 +18,7 @@
 
     <div class="bg-white container-fluid">
         <h2>
-       {{$book->dTitle->first()->title??''}}
+       {{$book->title??''}}
         </h2>
         <div class="text-muted">
             <b>Status : </b> {{$book->is_active ? 'Published' : 'Draft'}} ,
@@ -28,10 +28,10 @@
 
         <div class="border container-fluid">
             <div class="book-image row mb-3">
-                <img class="img-thumbnail" src="{{asset('storage/book/'.$book->image)}}" alt="">
+                <img class="img-thumbnail" src="{{asset($book->image)}}" alt="">
             </div>
             <div class="book-description row mb-3">
-                <b>Description : </b>  {!!html_entity_decode($book->dDescription->first()->description??'')!!}
+                <b>Description : </b>  {!!html_entity_decode($book->description??'')!!}
 
             </div>
             <div class="book-views row mb-3">
@@ -50,10 +50,8 @@
                                           {{$translator->title}},
                                           @endforeach
             </div>
-            <div class="book-link row mb-3">
-                <b>Book Links :</b> @foreach($book->dataLinks as $dataLink)
-                                        <a href="{{asset($dataLink->link)}}" class="d-block">{{\App\Language::find($dataLink->pivot->language_id)->language}}</a>,
-                                        @endforeach
+            <div class="book-link mb-3">
+                <b>Book Links :</b> <br/>{!!html_entity_decode($book->book_link??'')!!}
             </div>
             <div class="book-category row mb-3">
                 <b>Category : </b> @foreach($book->categories as $category)

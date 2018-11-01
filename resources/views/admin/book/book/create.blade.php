@@ -43,6 +43,13 @@
                 <input type="file" class="form-control-file" name="image" accept="image/x-png,image/gif,image/jpeg,image/png">
             </div>
 
+                <div class="form-group col-sm-8 col-md-12">
+                    <label for="title" class="font-weight-bold">Description :</label>
+                    <textarea class="form-control" rows="5" name="description" id="summernote"></textarea>
+                </div>
+
+
+
                 <div id="app" class="media-gallary-postion">
                     <media-modal v-if="showMediaManager" @media-modal-close="showMediaManager = false">
                         <media-manager
@@ -52,18 +59,12 @@
                         >
                         </media-manager>
                     </media-modal>
-                <div class="form-group col-sm-8 col-md-12">
-                    <label for="ebook" class="font-weight-bold">Ebook File :</label>
-                    <label for="selected-file" id="ebook_selected_file" class="font-weight-normal d-block">Selected File : </label>
-                     <input type="file" name="ebook" @click="preventDefaults">
+                    <div class="form-group col-sm-8 col-md-12">
+                        <label for="ebook" class="font-weight-bold d-block">Ebook File :</label>
+                        <input type="button" name="ebook" class="btn btn-dark" @click="preventDefaults" value="Add File">
+                        <textarea name="book_link" class="form-control" rows="1" id="book_link"></textarea>
+                    </div>
                 </div>
-
-                </div>
-                <div class="form-group col-sm-8 col-md-12">
-                    <label for="title" class="font-weight-bold">Description :</label>
-                    <textarea class="form-control" rows="5" name="description" id="summernote"></textarea>
-                </div>
-
 
             </div>
 
@@ -115,7 +116,7 @@
 
 
             <div class="form-group col-sm-8">
-                <a href="{{route('admin.book.index')}}" class="btn btn-primary btn-danger">BACK</a> <a class="btn btn-primary" href="javascript:void(0)" id="submit">ADD</a>
+                <a href="{{route('admin.book.index')}}" class="btn btn-primary btn-danger">BACK</a> <input type="submit" class="btn btn-primary" href="javascript:void(0)" id="submit" value="ADD">
             </div>
             <br>
 
@@ -134,7 +135,7 @@
             height: 150,
             callbacks: {
                 onChange: function (contents,$editable) {
-                    langData[currentLangId].description = contents
+                    //langData[currentLangId].description = contents
                 }
             }
         });
@@ -164,122 +165,6 @@
             enableCaseInsensitiveFiltering: true,
         })
 
-///Manipulate Language Data
-        var langData = <?php echo json_encode($langData); ?>,
-               currentLangId = $("#language").val(),
-               prevLangId = '',
-               currentLangData = '',
-               langEbook = <?php echo json_encode($langEbook); ?>,
-                langIdList = {{json_encode($langIdList)}};
-           returnCurrentLangData();
-
-
-$("#language").change(function () {
-    returnCurrentLangData();
-});
-
-$("[name='title']").change(function () {
-    langData[currentLangId].title = this.value
-})
-
-
-$("[name='ebook']").click(function (e) {
-    e.preventDefault()
-    //langEbook[currentLangId].file = [...this.files][0]
-    //$("#ebook_selected_file").text(`Selected File : ${langEbook[currentLangId].file.name}`)
-})
-
-
-$("#submit").click(function () {
-
-    const defaultData = langData[{{Config::get('websettings.defaultLanguage')}}]
-     var error = [];
-    if(defaultData.title.length < 1){
-        error.push('Default language book title is required')
-    }
-    if(defaultData.description.length < 5){
-        error.push('Default language book description is required')
-    }
-
-    if(error.length > 0){
-        var html = '';
-        error.forEach(function (text) {
-            html+= errorText(text)
-        })
-        console.log(html)
-        $(html).insertBefore("div.animated")
-        return
-    }
-
-    var data = {
-        main: langData,
-        author: $("[name='author[]']").val(),
-        translator: $("[name='translator[]']").val(),
-        category:$("[name='category[]']").val(),
-        tag:$("[name='tag[]']").val(),
-        is_active:$("[name='active']").is(':checked')
-        },
-        form = new FormData(),
-        image = $("[name='image']").prop('files')[0]
-
-    form.enctype = "multipart/form-data"
-    form.append('data',JSON.stringify(data))
-    form.append('image',image)
-    form.append('_token',`{{csrf_token()}}`)
-    form.append('_method','POST')
-    langIdList.forEach(function (item) {
-        form.append('ebook'+item,langEbook[item].file)
-    })
-    var ajax;
-    try{ajax=new XMLHttpRequest()}catch(t){try{ajax=new ActiveXObject("Msxml2.XMLHTTP")}catch(t){try{ajax=new ActiveXObject("Microsoft.XMLHTTP")}catch(t){console.log("Something error....")}}}
-
-    on('load',ajax,function (e) {
-        console.log(e.target.responseText)
-    const loads = JSON.parse(e.target.responseText)
-        if(loads.status){
-            window.open('{{route('admin.dashboard.ajaxSuccess',['route' => 'admin.book.edit','status' => 'Book Successfully Added','routeValue' => 'replaceit'])}}'.replace('replaceit',loads.bookId),"_self")
-        }
-
-    })
-    //ajax.setRequestHeader('Content-Type','multipart/form-data')
-    ajax.open('POST',"{{route('admin.book.store')}}");
-    ajax.send(form);
-
-
-
-})
-
-
-
-
-
-////functions....
- function _$(a, b = false){
-    let returns = b ? document.querySelectorAll(a) : document.querySelector(a); returns == null ? console.log(a+'is null') : ``; return returns != null ? returns : document.querySelector("#this-is-for-default-selector");
-    }
-  function on(a, b, c){
-    b.length ? b.forEach(e => {e.addEventListener(a, c)}) : b.addEventListener(a, c);return;
-}
-
-function returnCurrentLangData() {
-   prevLangId = currentLangId
-   langData[prevLangId].title = $("[name='title']").val()
-   langData[prevLangId].description = $('#summernote').summernote('code')
-   //langEbook[prevLangId].file = langEbook[prevLangId].file;
-
-   currentLangId = $("#language").val()
-   currentLangData = langData[currentLangId]
-   $("[name='title']").val(currentLangData.title)
-   $('#summernote').summernote('code',currentLangData.description)
-   //$("[name='ebook']").val('')
-   $("#ebook_selected_file").text(`Selected File : ${langEbook[currentLangId].file}`)
-
-        }
-function errorText(text){
-    return `<div class="alert alert-danger"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <i class="material-icons">close</i> </button> <span>${text}.</span> </div>`
-}
-
-
         new Vue({
             el: '#app',
             data: {
@@ -294,13 +179,15 @@ function errorText(text){
             },
             mounted(){
                 window.eventHub.$on('media-manager-selected-editor', (file) => {
-                    langEbook[currentLangId].file = file.relativePath
-                    $("#ebook_selected_file").text(`Selected File : ${langEbook[currentLangId].file}`)
+                    const html = $("#book_link").val()+`<a href="{{route('index')}}${file.relativePath}" class="d-block">Download - ${file.name}</a><br/>`
+
                     // Do something with the file info...
                     //console.log(file.name);
                     //console.log(file.mimeType);
-                    //console.log(file.relativePath);
+                    console.log(file.relativePath);
                     //console.log(file.webPath);
+
+                    $("#book_link").val(html)
 
                     // Hide the Media Manager...
                     this.showMediaManager = false;

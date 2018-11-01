@@ -18,13 +18,13 @@
     <div class="bg-white">
         <form method="post" action="{{route('admin.book.update',$book->id)}}" enctype="multipart/form-data">
             @csrf
-            @method('POST')
+            @method('PUT')
             <div class="form-group text-center">
                 <label for="title" class="font-weight-bold">Language</label>
                 <select id="language" name="language">
                     @foreach($languages as $language)
                         <option value="{{$language->id}}"
-                            {{Config::get('websettings.defaultLanguage') == $language->id ? 'selected' : ''}}
+                            {{$book->language_id == $language->id ? 'selected' : ''}}
                         >{{$language->language}}</option>
                     @endforeach
                 </select>
@@ -33,16 +33,21 @@
                 <div class="col-sm-7 col-md-9">
                     <div class="form-group col-sm-8 col-md-12">
                         <label for="title" class="font-weight-bold">Title :</label>
-                        <input type="text" class="form-control" name="title"
-                        value="{{$book->dTitle->first()->title??''}}">
+                        <input type="text" class="form-control" name="title" value="{{$book->title}}">
                     </div>
 
 
                     <div class="form-group col-sm-8 col-md-12">
                         <label for="image" class="font-weight-bold">Image :</label>
-                        <div class="d-block"><img src="{{asset('storage/book/'.$book->image)}}" width="80px"></div>
+                        <img src="{{asset($book->image)}}" width="100" class="d-block">
                         <input type="file" class="form-control-file" name="image" accept="image/x-png,image/gif,image/jpeg,image/png">
                     </div>
+
+                    <div class="form-group col-sm-8 col-md-12">
+                        <label for="title" class="font-weight-bold">Description :</label>
+                        <textarea class="form-control" rows="5" name="description" id="summernote">{{$book->description}}</textarea>
+                    </div>
+
 
 
                     <div id="app" class="media-gallary-postion">
@@ -55,17 +60,11 @@
                             </media-manager>
                         </media-modal>
                         <div class="form-group col-sm-8 col-md-12">
-                            <label for="ebook" class="font-weight-bold">Ebook File :</label>
-                            <label for="selected-file" id="ebook_selected_file" class="font-weight-normal d-block">Selected File : </label>
-                            <input type="file" name="ebook" @click="preventDefaults">
+                            <label for="ebook" class="font-weight-bold d-block">Ebook File :</label>
+                            <input type="button" name="ebook" class="btn btn-dark" @click="preventDefaults" value="Add File">
+                            <textarea name="book_link" class="form-control" rows="1" id="book_link">{{$book->book_link}}</textarea>
                         </div>
-
                     </div>
-                    <div class="form-group col-sm-8 col-md-12">
-                        <label for="title" class="font-weight-bold">Description :</label>
-                        <textarea class="form-control" rows="5" name="description" id="summernote">{{$book->dDescription->first()->description??''}}</textarea>
-                    </div>
-
 
                 </div>
 
@@ -117,7 +116,7 @@
 
 
             <div class="form-group col-sm-8">
-                <a href="{{route('admin.book.index')}}" class="btn btn-primary btn-danger">BACK</a> <a class="btn btn-primary" href="javascript:void(0)" id="submit">EDIT</a>
+                <a href="{{route('admin.book.index')}}" class="btn btn-primary btn-danger">BACK</a> <input type="submit" class="btn btn-primary" id="submit" value="EDIT">
             </div>
             <br>
 
@@ -135,7 +134,6 @@
                 height: 150,
                 callbacks: {
                     onChange: function (contents,$editable) {
-                        langData[currentLangId].description = contents
                     }
                 }
             });
@@ -165,125 +163,6 @@
                 enableCaseInsensitiveFiltering: true,
             })
 
-///Manipulate Language Data
-            var langData = <?php echo json_encode($langData) ?>,
-                currentLangId = $("#language").val(),
-                prevLangId = '',
-                currentLangData = '',
-                langEbook = <?php echo json_encode($langEbook); ?>,
-                langIdList = {{json_encode($langIdList)}},
-                langAbleEbook = <?php echo json_encode($langAbleEbook); ?>;
-                 returnCurrentLangData();
-
-
-            $("#language").change(function () {
-                returnCurrentLangData();
-            });
-
-            $("[name='title']").change(function () {
-                langData[currentLangId].title = this.value.replace(/\s+/g,' ').trim()
-            })
-
-
-            $("[name='ebook']").change(function () {
-                //langEbook[currentLangId].file = [...this.files][0]
-                //$("#ebook_selected_file").text(`Selected File : ${langEbook[currentLangId].file.name}`)
-            })
-
-
-            $("#submit").click(function () {
-
-                const defaultData = langData[{{Config::get('websettings.defaultLanguage')}}]
-                var error = [];
-                if(defaultData.title.length < 1){
-                    error.push('Default language book title is required')
-                }
-                if(defaultData.description.length < 5){
-                    error.push('Default language book description is required')
-                }
-
-                if(error.length > 0){
-                    var html = '';
-                    error.forEach(function (text) {
-                        html+= errorText(text)
-                    })
-                    console.log(html)
-                    $(html).insertBefore("div.animated")
-                    return
-                }
-
-                var data = {
-                        main: langData,
-                        author: $("[name='author[]']").val(),
-                        translator: $("[name='translator[]']").val(),
-                        category:$("[name='category[]']").val(),
-                        tag:$("[name='tag[]']").val(),
-                        is_active:$("[name='active']").is(':checked')
-                    },
-                    form = new FormData(),
-                    image = $("[name='image']").prop('files')[0]
-
-                form.enctype = "multipart/form-data"
-                form.append('data',JSON.stringify(data))
-                form.append('image',image)
-                form.append('_token',`{{csrf_token()}}`)
-                form.append('_method','PUT')
-                langIdList.forEach(function (item) {
-                    form.append('ebook'+item,langEbook[item].file)
-                })
-                var ajax;
-                try{ajax=new XMLHttpRequest()}catch(t){try{ajax=new ActiveXObject("Msxml2.XMLHTTP")}catch(t){try{ajax=new ActiveXObject("Microsoft.XMLHTTP")}catch(t){console.log("Something error....")}}}
-
-                on('load',ajax,function (e) {
-                    console.log(e.target.responseText)
-                    const loads = JSON.parse(e.target.responseText)
-                    if(loads.status){
-                        window.open('{{route('admin.dashboard.ajaxSuccess',['route' => 'false','status' => 'Book Successfully Updated..'])}}',"_self")
-                    }
-
-                })
-
-                ajax.open('POST',"{{route('admin.book.update',$book->id)}}");
-                ajax.send(form);
-
-
-
-            })
-
-
-
-
-
-////functions....
-            function _$(a, b = false){
-                let returns = b ? document.querySelectorAll(a) : document.querySelector(a); returns == null ? console.log(a+'is null') : ``; return returns != null ? returns : document.querySelector("#this-is-for-default-selector");
-            }
-            function on(a, b, c){
-                b.length ? b.forEach(e => {e.addEventListener(a, c)}) : b.addEventListener(a, c);return;
-            }
-
-            function returnCurrentLangData() {
-                prevLangId = currentLangId
-                langData[prevLangId].title = $("[name='title']").val().replace(/\s+/g,' ').trim()
-                langData[prevLangId].description = $('#summernote').summernote('code')
-                //langEbook[prevLangId].file = $("[name='ebook']").prop('files')[0] ? $("[name='ebook']").prop('files')[0] : langEbook[prevLangId].file;
-
-                currentLangId = $("#language").val()
-                currentLangData = langData[currentLangId]
-                $("[name='title']").val(currentLangData.title)
-                $('#summernote').summernote('code',currentLangData.description)
-                //$("[name='ebook']").val('')
-                const currentebookfile = `${(!langEbook[currentLangId].file) && langAbleEbook[currentLangId].link.length > 2
-                                           ? `<a href='${langAbleEbook[currentLangId].link}'>${langEbook[currentLangId].langTitle} Ebook File</a>`: langEbook[currentLangId].file }`;
-
-                $("#ebook_selected_file").html(`Selected File : `+currentebookfile)
-            }
-
-
-            function errorText(text){
-                return `<div class="alert alert-danger"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <i class="material-icons">close</i> </button> <span>${text}.</span> </div>`
-            }
-
 
             new Vue({
                 el: '#app',
@@ -299,13 +178,16 @@
                 },
                 mounted(){
                     window.eventHub.$on('media-manager-selected-editor', (file) => {
-                        langEbook[currentLangId].file = file.relativePath
-                        $("#ebook_selected_file").text(`Selected File : ${langEbook[currentLangId].file}`)
+
+                        const html = $("#book_link").val()+`<a href="{{route('index')}}${file.relativePath}" class="d-block">Download - ${file.name}</a><br/>`
+
                         // Do something with the file info...
                         //console.log(file.name);
                         //console.log(file.mimeType);
-                        //console.log(file.relativePath);
+                         console.log(file.relativePath);
                         //console.log(file.webPath);
+
+                        $("#book_link").val(html)
 
                         // Hide the Media Manager...
                         this.showMediaManager = false;

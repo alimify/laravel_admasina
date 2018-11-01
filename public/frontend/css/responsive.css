@@ -51,7 +51,7 @@
 	/* ---------------------------------
 	1. PRIMARY STYLES
 	--------------------------------- */
-
+    .banner-middle{display: none;}
 	p{ line-height: 1.4; }
 
 	h1{ font-size: 3em; }
@@ -275,4 +275,8 @@
  .logo-n-slogan{
      float: left;
  }
+    }
+
+@media only screen and (min-width: 767px) {
+    .logo-n-slogan{display: none}
 }

@@ -18,7 +18,7 @@
                 <select id="language" name="language">
                     @foreach($languages as $language)
                         <option value="{{$language->id}}"
-                            {{Config::get('websettings.defaultLanguage') == $language->id ? 'selected' : ''}}
+                            {{$post->languag_id == $language->id ? 'selected' : ''}}
                         >{{$language->language}}</option>
                     @endforeach
                 </select>
@@ -27,20 +27,20 @@
                 <div class="col-sm-7 col-md-9">
                     <div class="form-group col-sm-8 col-md-12">
                         <label for="title" class="font-weight-bold">Title :</label>
-                        <input type="text" class="form-control" name="title" value="{{$post->dTitle->first()->title??''}}">
+                        <input type="text" class="form-control" name="title" value="{{$post->title}}">
                     </div>
 
 
                     <div class="form-group col-sm-8 col-md-12">
                         <label for="image" class="font-weight-bold">Image :</label>
-                        <img src="{{asset('storage/post/'.$post->image)}}" alt="" class="img-thumbnail d-block" width="80px">
+                        <img src="{{asset($post->image)}}" alt="" class="img-thumbnail d-block" width="80px">
                         <input type="file" class="form-control-file" name="image" accept="image/x-png,image/gif,image/jpeg,image/png">
                     </div>
 
 
                     <div class="form-group col-sm-8 col-md-12">
                         <label for="title" class="font-weight-bold">Description :</label>
-                        <textarea class="form-control" rows="5" name="description" id="summernote">{{$post->dDescription->first()->description??''}}</textarea>
+                        <textarea class="form-control" rows="5" name="description" id="summernote">{{$post->description}}</textarea>
                     </div>
 
 
@@ -95,7 +95,7 @@
 
 
             <div class="form-group col-sm-8">
-                <a href="{{route('admin.post.index')}}" class="btn btn-primary btn-danger">BACK</a> <a class="btn btn-primary" href="javascript:void(0)" id="submit">EDIT</a>
+                <a href="{{route('admin.post.index')}}" class="btn btn-primary btn-danger">BACK</a> <input type="submit" class="btn btn-primary" id="submit" value="EDIT">
             </div>
             <br>
 
@@ -114,7 +114,7 @@
                 height: 150,
                 callbacks: {
                     onChange: function (contents,$editable) {
-                        langData[cLang].description = contents
+
                     }
                 }
             })
@@ -145,101 +145,6 @@
                 enableCaseInsensitiveFiltering: true,
             })
 
-            var langData = <?php echo json_encode($langData); ?>,
-                pLang,
-                cLang = $("#language").val();
-
-            $("[name='title']").change(function () {
-                langData[cLang].title = this.value
-            })
-
-            $("#language").change(function(){
-                pLang = cLang
-                cLang = this.value
-
-                langData[pLang].title = $("[name='title']").val()
-                langData[pLang].description = $('#summernote').summernote('code')
-
-                $("[name='title']").val(langData[cLang].title)
-                $('#summernote').summernote('code',langData[cLang].description)
-            })
-
-
-            $("#submit").click(function () {
-                var dtLang = langData[{{Config::get('websettings.defaultLanguage')}}],
-                    errorF = false;
-
-                if(dtLang.title.length < 2){
-                    errorF = !errorF
-                    $(errorText('Default language title should be greater than 2 letters.')).insertBefore("div.animated")
-                }
-
-                if(dtLang.description.length < 10){
-                    if(!errorF){
-                        errorF = true
-                    }
-                    $(errorText('Default language description should be greater than 10 letters.')).insertBefore("div.animated")
-                }
-
-                if(!errorF) {
-                    var data = {
-                            langData: langData,
-                            category: $("#category").val(),
-                            author: $("#author").val(),
-                            translator: $("#translator").val(),
-                            tag: $("#tag").val(),
-                            active: $("[name='active']").prop('checked')
-                        },
-                        image = $("[name='image']").prop('files')[0],
-                        form = new FormData(),
-                        ajax;
-
-                    form.append('data', JSON.stringify(data))
-
-                    if (image != undefined) {
-                        form.append('image', image)
-                    }
-                    form.append('_token', `{{csrf_token()}}`)
-                    form.append('_method', 'PUT')
-                    try {
-                        ajax = new XMLHttpRequest()
-                    } catch (t) {
-                        try {
-                            ajax = new ActiveXObject("Msxml2.XMLHTTP")
-                        } catch (t) {
-                            try {
-                                ajax = new ActiveXObject("Microsoft.XMLHTTP")
-                            } catch (t) {
-                                console.log("Something error....")
-                            }
-                        }
-                    }
-                    on('load', ajax, function (e) {
-                        console.log(e.target.responseText)
-                        const loads = JSON.parse(e.target.responseText)
-                        if (loads.status) {
-                            window.open('{{route('admin.dashboard.ajaxSuccess',['route' => 'false','status' => 'Post Successfully Edited.'])}}', "_self")
-                        }else{
-                            errorText('Post Can not added , something error.')
-                        }
-                    })
-
-                    ajax.open('POST', "{{route('admin.post.update',$post->id)}}");
-                    ajax.send(form);
-                }
-            })
-
-
-            function _$(a, b = false){
-                let returns = b ? document.querySelectorAll(a) : document.querySelector(a); returns == null ? console.log(a+'is null') : ``; return returns != null ? returns : document.querySelector("#this-is-for-default-selector");
-            }
-            function on(a, b, c){
-                b.length ? b.forEach(e => {e.addEventListener(a, c)}) : b.addEventListener(a, c);return;
-            }
-
-            function errorText(text){
-                return `<div class="alert alert-danger"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <i class="material-icons">close</i> </button> <span>${text}.</span> </div>`
-            }
 
         });
     </script>

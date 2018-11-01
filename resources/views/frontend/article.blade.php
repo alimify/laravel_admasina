@@ -23,16 +23,11 @@
                                 <div class="card h-100">
                                     <div class="single-post post-style-1">
                                         <a href="{{route('viewArticle',$article->id)}}">
-                                            <div class="blog-image"><img src="{{asset('storage/post/'.$article->image)}}" alt="image"></div>
+                                            <div class="blog-image"><img src="{{asset($article->image)}}" alt="image"></div>
 
 
                                             <div class="blog-info">
-                                                @php
-                                                $title = $article->title->first()->title??0;
-                                                $title = $title ? $title : $article->dTitle->first()->title??'';
-                                                @endphp
-
-                                                <span class="title"><b>{{$title}}</b></span>
+                                                <span class="title"><b>{{$article->title}}</b></span>
 
                                                 <ul class="post-footer">
                                                     <li><i class="ion-chatbubble"></i>{{$article->comments->count()}}</li>

@@ -10,11 +10,11 @@ class Language extends Model
 
 
     public function books(){
-        return $this->belongsToMany('App\Book');
+        return $this->hasMany('App\Book');
     }
 
     public function posts(){
-        return $this->belongsToMany('App\Post');
+        return $this->hasMany('App\Post');
     }
 
 

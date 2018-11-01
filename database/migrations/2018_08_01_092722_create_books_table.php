@@ -17,6 +17,10 @@ class CreateBooksTable extends Migration
             $table->increments('id');
             $table->string('image')->default('default.png');
             $table->integer('user_id')->nullable();
+            $table->string('title')->nullable();
+            $table->text('book_link')->nullable()->default(null);
+            $table->text('description');
+            $table->integer('language_id');
             $table->integer('rating')->default(0);
             $table->integer('views')->default(0);
             $table->boolean('is_active')->default(false);

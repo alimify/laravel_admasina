@@ -1,13 +1,7 @@
 @extends('layouts.frontend.app')
 
-@php
-$title = $article->title->first()->title??0;
-$title = $title ? $title : $article->dTitle->first()->title??'';
-$description = $article->description->first()->description??0;
-$description = $description ? $description : $article->dDescription->first()->description??'';
-@endphp
 
-@section('title',$title)
+@section('title',$article->title)
 
 @push('css')
     <style>
@@ -42,9 +36,9 @@ $description = $description ? $description : $article->dDescription->first()->de
 
                             </div><!-- post-info -->
 
-                            <h3 class="title"><a href="javascript:void(0)"><b>{{$title}}</b></a></h3>
-                            <div class="post-image"><img src="{{asset('storage/post/'.$article->image)}}" alt="{{$title}}"></div>
-                            {!!html_entity_decode($description)!!}
+                            <h3 class="title"><a href="javascript:void(0)"><b>{{$article->title}}</b></a></h3>
+                            <div class="post-image"><img src="{{asset($article->image)}}" alt="{{$article->title}}"></div>
+                            {!!html_entity_decode($article->description)!!}
 
                            <!-- <ul class="tags">
                                 @//foreach($article->tags as $tag)
@@ -117,17 +111,11 @@ $description = $description ? $description : $article->dDescription->first()->de
                     <div class="card h-100">
                         <div class="single-post post-style-1">
                             <a href="{{route('viewArticle',$rticle->id)}}">
-                                <div class="blog-image"><img src="{{asset('storage/post/'.$rticle->image)}}" alt="image"></div>
+                                <div class="blog-image"><img src="{{asset($rticle->image)}}" alt="image"></div>
 
 
                                 <div class="blog-info">
-
-                                    @php
-                                    $title = $rticle->title->first()->title??0;
-                                    $title = $title ? $title : $rticle->dTitle->first()->title??'';
-                                    @endphp
-
-                                    <span class="title"><b>{{str_limit($title,50)}}</b></span>
+                                    <span class="title"><b>{{str_limit($rticle->title,50)}}</b></span>
 
                                     <ul class="post-footer">
                                         <li><i class="ion-chatbubble"></i>{{$rticle->comments->count()}}</li>

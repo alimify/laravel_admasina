@@ -93,7 +93,7 @@
 
 
             <div class="form-group col-sm-8">
-                <a href="{{route('admin.post.index')}}" class="btn btn-primary btn-danger">BACK</a> <a class="btn btn-primary" href="javascript:void(0)" id="submit">ADD</a>
+                <a href="{{route('admin.post.index')}}" class="btn btn-primary btn-danger">BACK</a> <input class="btn btn-primary" type="submit" id="submit" value="ADD">
             </div>
             <br>
 
@@ -112,7 +112,7 @@
                 height: 150,
                 callbacks: {
                     onChange: function (contents,$editable) {
-                        langData[cLang].description = contents
+
                     }
                 }
             })
@@ -143,101 +143,6 @@
                 enableCaseInsensitiveFiltering: true,
             })
 
-     var langData = <?php echo json_encode($langData); ?>,
-          pLang,
-          cLang = $("#language").val();
-
-     $("[name='title']").change(function () {
-                langData[cLang].title = this.value
-     })
-
-     $("#language").change(function(){
-         pLang = cLang
-         cLang = this.value
-
-         langData[pLang].title = $("[name='title']").val()
-         langData[pLang].description = $('#summernote').summernote('code')
-
-         $("[name='title']").val(langData[cLang].title)
-         $('#summernote').summernote('code',langData[cLang].description)
-     })
-
-
-     $("#submit").click(function () {
-         var dtLang = langData[{{Config::get('websettings.defaultLanguage')}}],
-              errorF = false;
-
-         if(dtLang.title.length < 2){
-             errorF = !errorF
-             $(errorText('Default language title should be greater than 2 letters.')).insertBefore("div.animated")
-         }
-
-         if(dtLang.description.length < 10){
-             if(!errorF){
-                 errorF = true
-             }
-             $(errorText('Default language description should be greater than 10 letters.')).insertBefore("div.animated")
-         }
-
-         if(!errorF) {
-             var data = {
-                     langData: langData,
-                     category: $("#category").val(),
-                     author: $("#author").val(),
-                     translator: $("#translator").val(),
-                     tag: $("#tag").val(),
-                     active: $("[name='active']").prop('checked')
-                 },
-                 image = $("[name='image']").prop('files')[0],
-                 form = new FormData(),
-                 ajax;
-
-             form.append('data', JSON.stringify(data))
-
-             if (image != undefined) {
-                 form.append('image', image)
-             }
-             form.append('_token', `{{csrf_token()}}`)
-             form.append('_method', 'POST')
-             try {
-                 ajax = new XMLHttpRequest()
-             } catch (t) {
-                 try {
-                     ajax = new ActiveXObject("Msxml2.XMLHTTP")
-                 } catch (t) {
-                     try {
-                         ajax = new ActiveXObject("Microsoft.XMLHTTP")
-                     } catch (t) {
-                         console.log("Something error....")
-                     }
-                 }
-             }
-             on('load', ajax, function (e) {
-                 console.log(e.target.responseText)
-                 const loads = JSON.parse(e.target.responseText)
-                 if (loads.status) {
-                     window.open('{{route('admin.dashboard.ajaxSuccess',['route' => 'admin.post.index','status' => 'Post Successfully Added'])}}', "_self")
-                 }else{
-                     errorText('Post Can not added , something error.')
-                 }
-             })
-
-             ajax.open('POST', "{{route('admin.post.store')}}");
-             ajax.send(form);
-         }
-     })
-
-
-            function _$(a, b = false){
-                let returns = b ? document.querySelectorAll(a) : document.querySelector(a); returns == null ? console.log(a+'is null') : ``; return returns != null ? returns : document.querySelector("#this-is-for-default-selector");
-            }
-            function on(a, b, c){
-                b.length ? b.forEach(e => {e.addEventListener(a, c)}) : b.addEventListener(a, c);return;
-            }
-
-            function errorText(text){
-                return `<div class="alert alert-danger"> <button type="button" class="close" data-dismiss="alert" aria-label="Close"> <i class="material-icons">close</i> </button> <span>${text}.</span> </div>`
-            }
 
         });
     </script>

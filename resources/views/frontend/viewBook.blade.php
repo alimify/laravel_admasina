@@ -1,14 +1,6 @@
 @extends('layouts.frontend.app')
-@php
-$title = $book->title->first()->title??0;
-$title = $title ? $title : $book->dTitle->first()->title??'';
-$description = $book->description->first()->description??0;
-$description = $description ? $description : $book->dDescription->first()->description??'';
-$downloadlink = $book->datalink->first()->link??0;
-$downloadlink = $downloadlink ? $downloadlink : $book->dDatalink->first()->link??'';
-@endphp
 
-@section('title',$title)
+@section('title',$book->title)
 
 @push('css')
     <link rel="stylesheet" href="{{asset('frontend/css/rating.css')}}">
@@ -34,11 +26,11 @@ $downloadlink = $downloadlink ? $downloadlink : $book->dDatalink->first()->link?
                             <div class="post-info">
 
 
-                            <h3 class="title"><a href="javascript:void(0)"><b>{{$title}}</b></a></h3>
+                            <h3 class="title"><a href="javascript:void(0)"><b>{{$book->title}}</b></a></h3>
                             <div class="color-gray"><b>Posted: </b><span class="color-gray">{{$book->created_at->diffForHumans()}}</span></div>
-                            <div class="post-image"><img alt="{{$title}}" width="80px" src="{{asset('storage/book/'.$book->image)}}"></div>
+                            <div class="post-image"><img alt="{{$book->title}}" width="80px" src="{{asset($book->image)}}"></div>
 
-                           <b>Description:</b>{!! html_entity_decode($description) !!}
+                           <b>Description:</b>{!! html_entity_decode($book->description) !!}
                              <div id="rating-area">
                                  @php $rating = round($book->rate()->avg('rate'),1,PHP_ROUND_HALF_UP) @endphp
                                  <div id="rateYo"></div>
@@ -49,7 +41,7 @@ $downloadlink = $downloadlink ? $downloadlink : $book->dDatalink->first()->link?
 
                            <div class="parsa"><b>Translator: </b> @foreach($book->translators as $translator) {{$translator->title}}, @endforeach </div>
 
-                           <div class="parsa"><b>Download Link : </b>   <a href="{{asset($downloadlink)}}" class="color-gray font-weight-bold">Download Now Ebook File</a>  </div>
+                           <div class="parsa"><b>Download Link : </b>  <br/> {!! html_entity_decode($book->book_link) !!}  </div>
                             </div>
                         </div><!-- blog-post-inner -->
 
@@ -115,16 +107,12 @@ $downloadlink = $downloadlink ? $downloadlink : $book->dDatalink->first()->link?
                         <div class="card h-100">
                             <div class="single-post post-style-1">
                                 <a href="{{route('viewBook',$wook->id)}}">
-                                    <div class="blog-image"><img src="{{asset('storage/book/'.$wook->image)}}" alt="image"></div>
+                                    <div class="blog-image"><img src="{{asset($wook->image)}}" alt="image"></div>
 
 
                                     <div class="blog-info">
-                                        @php
-                                        $title = $wook->title->first()->title??0;
-                                        $title = $title ? $title : $wook->dTitle->first()->title??''
-                                        @endphp
 
-                                        <span class="title"><b>{{str_limit($title,20)}}</b></span>
+                                        <span class="title"><b>{{str_limit($wook->title,20)}}</b></span>
 
                                         <ul class="post-footer">
                                             <li><i class="ion-chatbubble"></i>{{$wook->comments->count()}}</li>
